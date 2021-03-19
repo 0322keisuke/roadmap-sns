@@ -1,6 +1,5 @@
 <template>
- <div class="border p-3 mt-1 tutorial">
-  <!-- <div class="d-flex flex-row"> -->
+ <div class="d-flex flex-row border p-3 mt-1 tutorial">
     <input type="hidden" name="tutorial_task_names" :value="listsJson" required>
     <roadmap-tutorial-list v-for="(list, index) in lists"
     :key="list.id"
@@ -12,7 +11,6 @@
       <roadmap-tutorial-add/>
     </div>
   </div>
- <!-- </div> -->
 </template>
 
 <script>

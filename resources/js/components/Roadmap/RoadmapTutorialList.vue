@@ -1,6 +1,6 @@
 <template>
   <div class="tutorial-list mr-1 align-top ">
-    <button class="btn">
+    <button class="btn position-relative">
       <p class="m-1 pr-5 text-nowrap">教材{{listIndex+1}}：{{ title }}</p>
       <div class="deletelist" @click="removeTutorial">×</div>
     </button>
