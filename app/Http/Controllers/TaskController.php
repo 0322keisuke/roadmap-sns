@@ -4,14 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Tutorial;
 use App\Task;
-
 use App\Http\Requests\TaskRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller
 {
-    public function store(TaskRequest $request,Task $task){
+    public function store(TaskRequest $request, Task $task)
+    {
         $task->name = $request->name;
         $task->tutorial_id = $request->tutorial_id;
         $task->order = 1;
@@ -22,11 +22,11 @@ class TaskController extends Controller
 
         $tasks = [];
 
-        foreach($tutorials as $tutorial){
-            $temp_tasks = Task::where('tutorial_id',$tutorial->id)->orderBy('created_at')->get()->toArray();
+        foreach ($tutorials as $tutorial) {
+            $temp_tasks = Task::where('tutorial_id', $tutorial->id)->orderBy('created_at')->get()->toArray();
 
-            for($i = 0;$i < count($temp_tasks);$i++){
-                array_push($tasks,$temp_tasks[$i]);
+            for ($i = 0; $i < count($temp_tasks); $i++) {
+                array_push($tasks, $temp_tasks[$i]);
             }
         }
 
@@ -35,18 +35,19 @@ class TaskController extends Controller
         ];
     }
 
-    public function destroy(Task $task){
+    public function destroy(Task $task)
+    {
         $task->delete();
 
         $tutorials = Auth::user()->tutorials()->orderBy('created_at')->get();
 
         $tasks = [];
 
-        foreach($tutorials as $tutorial){
-            $temp_tasks = Task::where('tutorial_id',$tutorial->id)->orderBy('created_at')->get()->toArray();
+        foreach ($tutorials as $tutorial) {
+            $temp_tasks = Task::where('tutorial_id', $tutorial->id)->orderBy('created_at')->get()->toArray();
 
-            for($i = 0;$i < count($temp_tasks);$i++){
-                array_push($tasks,$temp_tasks[$i]);
+            for ($i = 0; $i < count($temp_tasks); $i++) {
+                array_push($tasks, $temp_tasks[$i]);
             }
         }
 

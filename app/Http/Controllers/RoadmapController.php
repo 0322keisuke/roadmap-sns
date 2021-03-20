@@ -14,7 +14,7 @@ class RoadmapController extends Controller
     {
         $roadmaps = Roadmap::all()->sortByDesc('created_at');
 
-        return view('roadmaps.index',['roadmaps' => $roadmaps ]);
+        return view('roadmaps.index', ['roadmaps' => $roadmaps]);
     }
 
     public function create()
@@ -22,7 +22,7 @@ class RoadmapController extends Controller
         return view('roadmaps.create');
     }
 
-    public function store(RoadmapRequest $request,Roadmap $roadmap,RoadmapTutorial $roadmap_tutorial)
+    public function store(RoadmapRequest $request, Roadmap $roadmap, RoadmapTutorial $roadmap_tutorial)
     {
         $roadmap->title = $request->title;
         $roadmap->body = $request->body;
@@ -32,7 +32,7 @@ class RoadmapController extends Controller
         $roadmap->save();
 
 
-        foreach(json_decode($request->tutorial_task_names) as $tutorial_title){
+        foreach (json_decode($request->tutorial_task_names) as $tutorial_title) {
             $roadmap_tutorial = new RoadmapTutorial();
 
             $roadmap_tutorial->title = $tutorial_title->title;
@@ -41,12 +41,12 @@ class RoadmapController extends Controller
 
             $roadmap_tutorial->save();
 
-            foreach($tutorial_title->tasks as $tasks){
+            foreach ($tutorial_title->tasks as $tasks) {
                 $roadmap_tutorial_task = new RoadmapTutorialTask();
 
                 $roadmap_tutorial_task->name = $tasks;
                 $roadmap_tutorial_task->tutorial_id = RoadmapTutorial::max('id');
-                
+
                 $roadmap_tutorial_task->save();
             }
         }
@@ -54,7 +54,7 @@ class RoadmapController extends Controller
         return redirect()->route('roadmaps.index');
     }
 
-    public function like(Request $request,Roadmap $roadmap)
+    public function like(Request $request, Roadmap $roadmap)
     {
         $roadmap->likes()->detach($request->user()->id);
         $roadmap->likes()->attach($request->user()->id);
@@ -63,14 +63,13 @@ class RoadmapController extends Controller
             'id' => $roadmap->id,
             'countLikes' => $roadmap->count_likes,
         ];
-
     }
 
-    public function unlike(Request $request,Roadmap $roadmap)
+    public function unlike(Request $request, Roadmap $roadmap)
     {
         $roadmap->likes()->detach($request->user()->id);
 
-        return[
+        return [
             'id' => $roadmap->id,
             'countLikes' => $roadmap->count_likes,
         ];

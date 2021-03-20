@@ -19,8 +19,8 @@
 <div class="form-group">
   <label>学習レベル</label>
   <select name="level" class="form-control" value="{{ old('level') }}">
-  <option value="1">初級</option>
-  <option value="2">中級</option>
-  <option value="3">上級</option>
+    <option value="1">初級</option>
+    <option value="2">中級</option>
+    <option value="3">上級</option>
   </select>
 </div>

@@ -29,5 +29,4 @@ class Roadmap extends Model
     {
         return $this->likes->count();
     }
-
 }
