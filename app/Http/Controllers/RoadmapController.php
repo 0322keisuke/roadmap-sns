@@ -14,7 +14,7 @@ class RoadmapController extends Controller
     {
         $roadmaps = Roadmap::all()->sortByDesc('created_at');
 
-        return view('roadmaps.index', ['roadmaps' => $roadmaps ]);
+        return view('roadmaps.index', ['roadmaps' => $roadmaps]);
     }
 
     public function create()
@@ -69,7 +69,7 @@ class RoadmapController extends Controller
     {
         $roadmap->likes()->detach($request->user()->id);
 
-        return[
+        return [
             'id' => $roadmap->id,
             'countLikes' => $roadmap->count_likes,
         ];
