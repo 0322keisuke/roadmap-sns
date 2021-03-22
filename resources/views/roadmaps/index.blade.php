@@ -27,7 +27,8 @@
           <div class="card-text">
             <div class="estimated-time mr-1">
               <i class="far fa-clock"></i>
-              <span>{{ $roadmap->estimated_time }}h</span>
+              <span class="mr-3">{{ $roadmap->estimated_time }}h</span>
+              <span>Lv {{ $roadmap->level_text }}</span>
             </div>
           </div>
         </div>
