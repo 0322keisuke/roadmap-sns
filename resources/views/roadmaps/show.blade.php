@@ -1,6 +1,6 @@
 @extends('app')
 
-@section('title', 'ロードマップ投稿画面')
+@section('title', 'ロードマップ詳細画面')
 
 @section('content')
 @include('nav')
