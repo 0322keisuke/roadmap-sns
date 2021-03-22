@@ -5,6 +5,8 @@
             type="text"
             class="text-input"
             placeholder="タスクを追加"
+            pattern=".*\S+.*"
+            required
             @focusin="startEditing"
             @focusout="finishEditing"
         />
