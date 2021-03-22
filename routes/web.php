@@ -16,11 +16,12 @@ use App\Http\Controllers\RoadmapController;
 Auth::routes();
 Route::get('/login/guest', 'Auth\LoginController@authenticate');
 Route::get('/', 'RoadmapController@index')->name('roadmaps.index');
-Route::get('roadmaps/{roadmap}', 'RoadmapController@show')->name('roadmaps.show');
 
-Route::get('roadmaps/create', 'RoadmapController@create')->name('roadmaps.create')->middleware('auth');
-Route::post('roadmaps/store', 'RoadmapController@store')->name('roadmaps.store')->middleware('auth');
 
+Route::get('/roadmaps/create', 'RoadmapController@create')->name('roadmaps.create')->middleware('auth');
+Route::post('/roadmaps/store', 'RoadmapController@store')->name('roadmaps.store')->middleware('auth');
+
+Route::get('/roadmaps/{roadmap}', 'RoadmapController@show')->name('roadmaps.show');
 
 Route::get('/tutorials', 'TutorialController@index')->name('tutorials.index')->middleware('auth');
 Route::post('/tutorials/store', 'TutorialController@store')->middleware('auth');
