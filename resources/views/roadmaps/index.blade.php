@@ -33,13 +33,13 @@
               </div>
             </div>
           </div>
-          <div class="card-body pt-0 pb-2 pl-3">
-            <div class="card-text">
-              <roadmap-like :initial-is-liked-by='@json($roadmap->isLikedBy(Auth::user()))' :initial-count-likes='@json($roadmap->count_likes)' :authorized='@json(Auth::check())' endpoint="{{ route('roadmaps.like',['roadmap' => $roadmap]) }}">
-              </roadmap-like>
-            </div>
-          </div>
         </a>
+        <div class="card-body pt-0 pb-2 pl-3">
+          <div class="card-text">
+            <roadmap-like :initial-is-liked-by='@json($roadmap->isLikedBy(Auth::user()))' :initial-count-likes='@json($roadmap->count_likes)' :authorized='@json(Auth::check())' endpoint="{{ route('roadmaps.like',['roadmap' => $roadmap]) }}">
+            </roadmap-like>
+          </div>
+        </div>
       </div>
     </div>
     @endforeach
