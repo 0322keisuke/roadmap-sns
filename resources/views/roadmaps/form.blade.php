@@ -5,7 +5,12 @@
 </div>
 
 <label> 教材名/タスク名 </label>
+@if($lists ?? '')
+<roadmap-tutorial :initial-lists='@json($lists)' :old="{{ json_encode(Session::getOldInput() !== [] ? Session::getOldInput() : new stdClass ) }}"></roadmap-tutorial>
+
+@else
 <roadmap-tutorial :old="{{ json_encode(Session::getOldInput() !== [] ? Session::getOldInput() : new stdClass ) }}"></roadmap-tutorial>
+@endif
 
 <div class="form-group">
   <label></label>

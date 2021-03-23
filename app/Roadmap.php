@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Roadmap extends Model
 {
@@ -46,5 +47,10 @@ class Roadmap extends Model
         }
 
         return self::LEVEL[$level];
+    }
+
+    public function tutorials(): HasMany
+    {
+        return $this->hasMany('App\RoadmapTutorial');
     }
 }
