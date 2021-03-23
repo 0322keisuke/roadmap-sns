@@ -4,7 +4,7 @@ const state = {
 
 const mutations = {
     initiallist(state, payload) {
-        state.lists = JSON.parse(payload);
+        state.lists = payload;
     },
     addlist(state, payload) {
         state.lists.push({ title: payload.title, tasks: [] });

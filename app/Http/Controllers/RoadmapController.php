@@ -77,6 +77,22 @@ class RoadmapController extends Controller
 
     public function show(Roadmap $roadmap)
     {
-        return view('roadmaps.show', ['roadmap' => $roadmap]);
+        $tutorials = $roadmap->tutorials()->orderBy('created_at')->get();
+
+        $tutorials_title = $roadmap->tutorials()->orderBy('created_at')->get('title')->toArray();
+
+        $lists = [];
+
+        foreach ($tutorials as $key => $tutorial) {
+            array_push($lists, ['title' => $tutorials_title[$key]['title'], 'tasks' => []]);
+
+            $temp_tasks = RoadmapTutorialTask::where('tutorial_id', $tutorial->id)->orderBy('created_at')->get('name')->toArray();
+
+            for ($i = 0; $i < count($temp_tasks); $i++) {
+                array_push($lists[$key]['tasks'],  $temp_tasks[$i]['name']);
+            }
+        }
+
+        return view('roadmaps.show', ['roadmap' => $roadmap, 'lists' => $lists]);
     }
 }
