@@ -32,25 +32,30 @@ export default {
     props: {
         old: {
             type: Object
-        }
-    },
-    data() {
-        return {
-            // getLists:this.initialTutorials,
-            getLists: this.old.tutorial_task_names
-        };
-    },
-    mounted: function() {
-        if (this.getLists) {
-            this.$store.dispatch("roadmap/initiallist", this.getLists);
+        },
+        initialLists: {
+            type: Array
         }
     },
     computed: {
+        getLists() {
+            //直前の入力値がない場合は、DBの値を初期表示する。
+            if (0 === Object.keys(this.old).length) {
+                return this.initialLists;
+            }
+            return JSON.parse(this.old.tutorial_task_names);
+        },
         ...mapState({
             lists: state => state.roadmap.lists
         }),
         listsJson() {
             return JSON.stringify(this.lists);
+        }
+    },
+    mounted: function() {
+        //"直前の入力値(old)"もしくは"DBの値(initialLists)"がある場合のみ、初期をセットする。
+        if (this.getLists) {
+            this.$store.dispatch("roadmap/initiallist", this.getLists);
         }
     }
 };
