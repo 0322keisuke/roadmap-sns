@@ -29,14 +29,22 @@ export default {
         RoadmapTutorialAdd,
         RoadmapTutorialList
     },
-    // data(){
-    //   return {
-    //     getLists:this.initialTutorials,
-    //   }
-    // },
-    // mounted: function () {
-    //   this.$store.dispatch('tutorial/initiallist',this.getLists)
-    // },
+    props: {
+        old: {
+            type: Object
+        }
+    },
+    data() {
+        return {
+            // getLists:this.initialTutorials,
+            getLists: this.old.tutorial_task_names
+        };
+    },
+    mounted: function() {
+        if (this.getLists) {
+            this.$store.dispatch("roadmap/initiallist", this.getLists);
+        }
+    },
     computed: {
         ...mapState({
             lists: state => state.roadmap.lists

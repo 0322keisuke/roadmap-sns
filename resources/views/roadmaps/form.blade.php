@@ -4,7 +4,8 @@
   <input type="text" name="title" id="title" class="form-control" value="{{ old('title') }}">
 </div>
 
-<roadmap-tutorial></roadmap-tutorial>
+<label> 教材名/タスク名 </label>
+<roadmap-tutorial :old="{{ json_encode(Session::getOldInput() !== [] ? Session::getOldInput() : new stdClass ) }}"></roadmap-tutorial>
 
 <div class="form-group">
   <label></label>

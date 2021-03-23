@@ -3,6 +3,9 @@ const state = {
 };
 
 const mutations = {
+    initiallist(state, payload) {
+        state.lists = JSON.parse(payload);
+    },
     addlist(state, payload) {
         state.lists.push({ title: payload.title, tasks: [] });
     },
@@ -18,6 +21,9 @@ const mutations = {
 };
 
 const actions = {
+    initiallist(context, payload) {
+        context.commit("initiallist", payload);
+    },
     addlist(context, payload) {
         context.commit("addlist", payload);
     },

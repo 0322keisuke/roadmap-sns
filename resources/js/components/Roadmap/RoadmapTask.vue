@@ -1,7 +1,7 @@
 <template>
-    <div class="d-flex flex-row list border p-2 m-2">
+    <div class="d-flex flex-row list border p-2 my-2">
         {{ name }}
-        <div class="deletelist" @click="removeTask()">×</div>
+        <div class="deletelist" @click="removeTask">×</div>
     </div>
 </template>
 

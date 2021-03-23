@@ -2,7 +2,7 @@
     <form :class="classList" @submit.prevent="addList">
         <input
             v-model="title"
-            type="test"
+            type="text"
             class="text-input"
             placeholder="新しい教材名を入力"
             @focusin="startEditing"

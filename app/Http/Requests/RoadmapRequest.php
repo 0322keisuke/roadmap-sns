@@ -25,7 +25,7 @@ class RoadmapRequest extends FormRequest
     {
         return [
             'title' => 'required|max:50',
-            'tutorial_task_names' => 'required',
+            'tutorial_task_names' => 'required|json|not_in:[]',
             'body' => 'required|max:500',
             'estimated_time' => 'required|max:300',
             'level' => 'required|max:3',
@@ -40,6 +40,18 @@ class RoadmapRequest extends FormRequest
             'body' => '説明',
             'estimated_time' => '学習時間目安',
             'level' => '学習レベル',
+        ];
+    }
+
+    /**
+     * 定義済みバリデーションルールのエラーメッセージ取得
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'tutorial_task_names.not_in' => '教材名は必ず入力してください。',
         ];
     }
 }

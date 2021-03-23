@@ -1,11 +1,11 @@
 <template>
-    <div class="tutorial-list mr-1 align-top ">
-        <button class="btn position-relative">
-            <p class="m-1 pr-5 text-nowrap">
+    <div class="tutorial-list align-top mr-3">
+        <div class="bg-primary border p-2 text-white position-relative">
+            <div class="m-1 pr-5 text-nowrap">
                 教材{{ listIndex + 1 }}：{{ title }}
-            </p>
+            </div>
             <div class="deletelist" @click="removeTutorial">×</div>
-        </button>
+        </div>
 
         <roadmap-task
             v-for="(task, index) in tasks"

@@ -74,4 +74,9 @@ class RoadmapController extends Controller
             'countLikes' => $roadmap->count_likes,
         ];
     }
+
+    public function show(Roadmap $roadmap)
+    {
+        return view('roadmaps.show', ['roadmap' => $roadmap]);
+    }
 }
