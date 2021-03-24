@@ -24,7 +24,7 @@
 
 <div class="form-group">
   <label>学習レベル</label>
-  <select name="level" class="form-control" value="{{ $roadmap->level ?? old('level') }}">
+  <select name="level" class="form-control" value="{{ $roadmap->level ?? old('level') }}" {{ str_contains(url()->current(), 'create') ? '' : 'disabled' }}>
     <option value="1">初級</option>
     <option value="2">中級</option>
     <option value="3">上級</option>
