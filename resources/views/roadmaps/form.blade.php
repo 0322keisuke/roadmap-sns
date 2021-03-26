@@ -1,7 +1,7 @@
 @csrf
 <div class="md-form">
   <label for="title">ロードマップ名</label>
-  <input type="text" name="title" id="title" class="form-control" value="{{ $roadmap->title ?? old('title') }}">
+  <input type="text" name="title" id="title" class="form-control" value="{{ $roadmap->title ?? old('title') }}" {{ str_contains(url()->current(), 'create') ? '' : 'disabled' }}>
 </div>
 
 <label> 教材名/タスク名 </label>
@@ -9,17 +9,17 @@
 <roadmap-tutorial :initial-lists='@json($lists)' :old="{{ json_encode(Session::getOldInput() !== [] ? Session::getOldInput() : new stdClass ) }}"></roadmap-tutorial>
 
 @else
-<roadmap-tutorial :old="{{ json_encode(Session::getOldInput() !== [] ? Session::getOldInput() : new stdClass ) }}"></roadmap-tutorial>
+<roadmap-tutorial :old="{{ json_encode(Session::getOldInput() !== [] ? Session::getOldInput() : new stdClass ) }}" :editable='@json(true)'></roadmap-tutorial>
 @endif
 
-<div class="form-group">
+<div class=" form-group">
   <label></label>
-  <textarea name="body" class="form-control" rows="8" placeholder="説明">{{ $roadmap->body ?? old('body') }}</textarea>
+  <textarea name="body" class="form-control" rows="8" placeholder="説明" {{ str_contains(url()->current(), 'create') ? '' : 'disabled' }}>{{ $roadmap->body ?? old('body') }}</textarea>
 </div>
 
 <div class="md-form">
   <label for="estimated_time">学習時間目安(単位：時間)</label>
-  <input type="number" name="estimated_time" id="estimated_time" class="form-control" value="{{ $roadmap->estimated_time ?? old('estimated_time') }}" min="1" max="300">
+  <input type="number" name="estimated_time" id="estimated_time" class="form-control" value="{{ $roadmap->estimated_time ?? old('estimated_time') }}" min="1" max="300" {{ str_contains(url()->current(), 'create') ? '' : 'disabled' }}>
 </div>
 
 <div class="form-group">
