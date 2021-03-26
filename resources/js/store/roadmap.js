@@ -1,5 +1,6 @@
 const state = {
-    lists: []
+    lists: [],
+    editable: false
 };
 
 const mutations = {
@@ -17,6 +18,9 @@ const mutations = {
     },
     removeTask(state, payload) {
         state.lists[payload.listIndex].tasks.splice(payload.taskIndex, 1);
+    },
+    setEditable(state, payload) {
+        state.editable = payload;
     }
 };
 
@@ -35,6 +39,9 @@ const actions = {
     },
     removeTask(context, payload) {
         context.commit("removeTask", payload);
+    },
+    setEditable(context, payload) {
+        context.commit("setEditable", payload);
     }
 };
 

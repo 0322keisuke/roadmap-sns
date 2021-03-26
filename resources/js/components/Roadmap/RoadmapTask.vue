@@ -1,11 +1,13 @@
 <template>
     <div class="d-flex flex-row list border p-2 my-2">
         {{ name }}
-        <div class="deletelist" @click="removeTask">×</div>
+        <div v-if="editable" class="deletelist" @click="removeTask">×</div>
     </div>
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
     props: {
         name: {
@@ -25,6 +27,11 @@ export default {
         return {
             getTasks: this.initialTasks
         };
+    },
+    computed: {
+        ...mapState({
+            editable: state => state.roadmap.editable
+        })
     },
     methods: {
         removeTask: function() {

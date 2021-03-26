@@ -13,7 +13,7 @@
             :tasks="list.tasks"
             :listIndex="index"
         />
-        <div class="p-2 mr-1">
+        <div v-if="getEditable" class="p-2 mr-1">
             <roadmap-tutorial-add />
         </div>
     </div>
@@ -35,7 +35,16 @@ export default {
         },
         initialLists: {
             type: Array
+        },
+        editable: {
+            type: Boolean,
+            default: false
         }
+    },
+    data() {
+        return {
+            getEditable: this.editable
+        };
     },
     computed: {
         getLists() {
@@ -53,6 +62,8 @@ export default {
         }
     },
     mounted: function() {
+        this.$store.dispatch("roadmap/setEditable", this.getEditable);
+
         //"直前の入力値(old)"もしくは"DBの値(initialLists)"がある場合のみ、初期をセットする。
         if (this.getLists) {
             this.$store.dispatch("roadmap/initiallist", this.getLists);

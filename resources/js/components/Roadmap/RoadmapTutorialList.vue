@@ -4,7 +4,9 @@
             <div class="m-1 pr-5 text-nowrap">
                 教材{{ listIndex + 1 }}：{{ title }}
             </div>
-            <div class="deletelist" @click="removeTutorial">×</div>
+            <div v-if="editable" class="deletelist" @click="removeTutorial">
+                ×
+            </div>
         </div>
 
         <roadmap-task
@@ -15,7 +17,7 @@
             :taskIndex="index"
         />
 
-        <div class="m-1">
+        <div v-if="editable" class="m-1">
             <roadmap-task-add :listIndex="listIndex" />
         </div>
     </div>
@@ -24,6 +26,7 @@
 <script>
 import RoadmapTask from "./RoadmapTask";
 import RoadmapTaskAdd from "./RoadmapTaskAdd";
+import { mapState } from "vuex";
 
 export default {
     components: {
@@ -43,6 +46,11 @@ export default {
             type: Number,
             required: true
         }
+    },
+    computed: {
+        ...mapState({
+            editable: state => state.roadmap.editable
+        })
     },
     methods: {
         removeTutorial: function() {

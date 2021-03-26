@@ -7,15 +7,5 @@
 <div class="container">
   <tutorial-task :initial-tutorials='@json($tutorials)' :initial-tasks='@json($tasks)' :initial-tutorial-id='@json($first_tutorial_id)'>
   </tutorial-task>
-
-  <!-- <tutorial
-    :initial-tutorials='@json($tutorials)'
-    >
-    </tutorial>
-
-    <task
-    :initial-tasks='@json($tasks)'
-    >
-    </task>   -->
 </div>
 @endsection
