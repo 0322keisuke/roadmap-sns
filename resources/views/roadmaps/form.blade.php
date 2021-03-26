@@ -22,11 +22,17 @@
   <input type="number" name="estimated_time" id="estimated_time" class="form-control" value="{{ $roadmap->estimated_time ?? old('estimated_time') }}" min="1" max="300" {{ str_contains(url()->current(), 'create') ? '' : 'disabled' }}>
 </div>
 
+@if(str_contains(url()->current(),'create'))
 <div class="form-group">
   <label>学習レベル</label>
-  <select name="level" class="form-control" value="{{ $roadmap->level ?? old('level') }}" {{ str_contains(url()->current(), 'create') ? '' : 'disabled' }}>
+  <select name="level" class="form-control" value="{{ $roadmap->level ?? old('level') }}">
     <option value="1">初級</option>
     <option value="2">中級</option>
     <option value="3">上級</option>
   </select>
+  @else
+  <label>学習レベル</label>
+  <h6 class="border-bottom"><strong>{{ $roadmap->level_text }}</h6>
+  @endif
+
 </div>
