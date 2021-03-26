@@ -11,6 +11,9 @@ const mutations = {
     },
     removeTask(state, payload) {
         state.tasks = payload.tasks;
+    },
+    setTask(state, payload) {
+        state.tasks = payload;
     }
 };
 
@@ -29,12 +32,31 @@ const actions = {
         );
 
         context.commit("removeTask", response.data);
+    },
+    setTask(context, payload) {
+        context.commit("setTask", payload);
     }
+};
+
+const getters = {
+    Todo: state =>
+        state.tasks.filter(function(task) {
+            return task.status === 1;
+        }),
+    Doing: state =>
+        state.tasks.filter(function(task) {
+            return task.status === 2;
+        }),
+    Done: state =>
+        state.tasks.filter(function(task) {
+            return task.status === 3;
+        })
 };
 
 export default {
     namespaced: true,
     state,
     mutations,
-    actions
+    actions,
+    getters
 };
