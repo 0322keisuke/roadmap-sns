@@ -19,11 +19,23 @@ class TutorialController extends Controller
         $tasks = [];
 
         foreach ($tutorials as $tutorial) {
+
             $temp_tasks = Task::where('tutorial_id', $tutorial->id)->orderBy('created_at')->get()->toArray();
 
-            for ($i = 0; $i < count($temp_tasks); $i++) {
-                array_push($tasks, $temp_tasks[$i]);
-            }
+            $todo = array_filter($temp_tasks, function ($value) {
+                return $value['status'] == 1;
+            });
+            array_push($tasks, ['tutorial_id' => $tutorial->id, 'title' => 'Todo', 'status' => 1, 'tasks' => array_values($todo)]);
+
+            $doing = array_filter($temp_tasks, function ($value) {
+                return $value['status'] == 2;
+            });
+            array_push($tasks, ['tutorial_id' => $tutorial->id, 'title' => 'Doing', 'status' => 2, 'tasks' => array_values($doing)]);
+
+            $done = array_filter($temp_tasks, function ($value) {
+                return $value['status'] == 3;
+            });
+            array_push($tasks, ['tutorial_id' => $tutorial->id, 'title' => 'Done', 'status' => 3, 'tasks' => array_values($done)]);
         }
 
         return view('tutorials.index', [
