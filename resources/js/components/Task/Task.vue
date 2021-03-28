@@ -5,10 +5,9 @@
         <draggable
             group="tasks"
             :list="displayTasks"
-            @end="
-                $emit('status', status);
-                $emit('change', $event);
-                dropevent($event);
+            @update="
+                $emit('update_status', status);
+                $emit('update', $event);
             "
         >
             <div
@@ -54,9 +53,6 @@ export default {
                     id: task.id
                 });
             }
-        },
-        dropevent(event) {
-            console.log(event);
         }
     }
 };
