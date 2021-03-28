@@ -33,7 +33,10 @@ const actions = {
 
         context.commit("removeTask", response.data);
     },
-    updateTask(context, payload) {
+    async updateTask(context, payload) {
+        const response = await axios.patch("/tasks/update", payload);
+
+        // context.commit("updateTask", response.data);
         context.commit("updateTask", payload);
     }
 };
