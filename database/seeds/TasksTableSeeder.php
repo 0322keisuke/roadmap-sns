@@ -23,7 +23,7 @@ class TasksTableSeeder extends Seeder
             DB::table('tasks')->insert([
                 'name' => $name,
                 'tutorial_id' => $tutorial->id,
-                'order' => $counter + 1,
+                'order' => $counter,
                 'status' => $counter + 1,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
