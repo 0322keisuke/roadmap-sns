@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Tutorial;
 use App\Task;
 use App\Http\Requests\TaskRequest;
+use App\Http\Requests\MovingTaskRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class TaskController extends Controller
 {
@@ -45,6 +47,46 @@ class TaskController extends Controller
         return [
             'tasks' => $tasks,
         ];
+    }
+
+    public function update(MovingTaskRequest $request)
+    {
+        \Debugbar::info($request->tasks);
+
+        DB::table('tasks')->where('id', $request->id)->update(['order' => $request->newIndex]);
+
+        if ($request->oldIndex < $request->newIndex) {
+            \Debugbar::info('ケース１');
+            \Debugbar::info('displayTutorialId:'
+                . $request->displayTutorialId);
+            \Debugbar::info('status:' . $request->status);
+            \Debugbar::info('oldIndex:' . $request->oldIndex);
+            \Debugbar::info('newIndex:' . $request->newIndex);
+            \Debugbar::info('id:' . $request->id);
+
+            DB::table('tasks')->where([
+                ['tutorial_id', '=', $request->displayTutorialId],
+                ['status', '=', $request->status],
+                ['order', '>', $request->oldIndex],
+                ['order', '<=', $request->newIndex],
+                ['id', '<>', $request->id]
+            ])->decrement('order');
+        } elseif ($request->oldIndex > $request->newIndex) {
+            \Debugbar::info('ケース２');
+            \Debugbar::info('oldIndex:' . $request->oldIndex);
+            \Debugbar::info('newIndex:' . $request->newIndex);
+            \Debugbar::info('id:' . $request->id);
+
+            DB::table('tasks')->where([
+                ['tutorial_id', '=', $request->displayTutorialId],
+                ['status', '=', $request->status],
+                ['order', '<', $request->oldIndex],
+                ['order', '>=', $request->newIndex],
+                ['id', '<>', $request->id]
+            ])->increment('order');
+        } else {
+            \Debugbar::info('Indexが変化していません');
+        }
     }
 
     public function destroy(Task $task)

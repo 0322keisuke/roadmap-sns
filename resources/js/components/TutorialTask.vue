@@ -9,8 +9,8 @@
                 :title="task.title"
                 :status="task.status"
                 :displayTasks="task.tasks"
-                @change="movingTask"
                 @status="movingTaskStatus = $event"
+                @change="movingTask"
             />
         </div>
     </div>
@@ -69,8 +69,8 @@ export default {
                     tasks: this.tasks,
                     oldIndex: event.oldIndex,
                     newIndex: event.newIndex,
-                    id: this.DisplayTasks[this.movingTaskStatus]["tasks"][
-                        event.oldIndex
+                    id: this.DisplayTasks[this.movingTaskStatus - 1]["tasks"][
+                        event.newIndex
                     ].id,
                     displayTutorialId: this.display_tutorial_id,
                     status: this.movingTaskStatus

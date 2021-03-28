@@ -6,8 +6,8 @@
             group="tasks"
             :list="displayTasks"
             @end="
-                $emit('change', $event);
                 $emit('status', status);
+                $emit('change', $event);
                 dropevent($event);
             "
         >
