@@ -9,6 +9,7 @@
                 :title="task.title"
                 :status="task.status"
                 :displayTasks="task.tasks"
+                @status="movingTaskStatus = $event"
                 @change="movingTask"
             />
         </div>
@@ -38,6 +39,11 @@ export default {
             type: Number
         }
     },
+    data() {
+        return {
+            movingTaskStatus: 0
+        };
+    },
     mounted: function() {
         this.$store.dispatch(
             "tutorial/initialTutorialId",
@@ -57,8 +63,19 @@ export default {
         }
     },
     methods: {
-        movingTask: function() {
-            this.$store.dispatch("task/updateTask", { tasks: this.tasks });
+        movingTask: function(event) {
+            if (event.oldIndex !== event.newIndex) {
+                this.$store.dispatch("task/updateTask", {
+                    tasks: this.tasks,
+                    oldIndex: event.oldIndex,
+                    newIndex: event.newIndex,
+                    id: this.DisplayTasks[this.movingTaskStatus - 1]["tasks"][
+                        event.newIndex
+                    ].id,
+                    displayTutorialId: this.display_tutorial_id,
+                    status: this.movingTaskStatus
+                });
+            }
         }
     }
 };

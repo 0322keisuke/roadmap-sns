@@ -2,7 +2,15 @@
     <div class="col col-md-3.8 border m-2 bg-color">
         <h3 class="text-center">{{ title }}</h3>
         <p>やることタスクの数：{{ displayTasks.length }}</p>
-        <draggable group="tasks" :list="displayTasks" @end="$emit('change')">
+        <draggable
+            group="tasks"
+            :list="displayTasks"
+            @end="
+                $emit('status', status);
+                $emit('change', $event);
+                dropevent($event);
+            "
+        >
             <div
                 v-for="task in displayTasks"
                 :key="task.id"
@@ -46,6 +54,9 @@ export default {
                     id: task.id
                 });
             }
+        },
+        dropevent(event) {
+            console.log(event);
         }
     }
 };
