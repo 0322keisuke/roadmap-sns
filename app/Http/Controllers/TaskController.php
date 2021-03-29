@@ -14,9 +14,15 @@ class TaskController extends Controller
 {
     public function store(TaskRequest $request, Task $task)
     {
+        $max_order = DB::table('tasks')->where([
+            ['tutorial_id', '=', $request->tutorial_id],
+            ['status', '=', $request->status]
+        ])->max('order');
+        \Debugbar::info($max_order);
+
         $task->name = $request->name;
         $task->tutorial_id = $request->tutorial_id;
-        $task->order = 1;
+        $task->order = $max_order + 1;
         $task->status = $request->status;
         $task->save();
 
@@ -26,7 +32,7 @@ class TaskController extends Controller
 
         foreach ($tutorials as $tutorial) {
 
-            $temp_tasks = Task::where('tutorial_id', $tutorial->id)->orderBy('created_at')->get()->toArray();
+            $temp_tasks = Task::where('tutorial_id', $tutorial->id)->orderByRaw('status asc,"order" asc')->get()->toArray();
 
             $todo = array_filter($temp_tasks, function ($value) {
                 return $value['status'] == 1;
