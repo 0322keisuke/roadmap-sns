@@ -24,12 +24,14 @@ class MovingTaskRequest extends FormRequest
     public function rules()
     {
         return [
-            'tasks' => 'required',
-            'oldIndex' => 'required',
-            'newIndex' => 'required',
-            'id' => 'required',
-            'displayTutorialId' => 'required',
-            'status' => 'required',
+            'tasks' => 'required|array',
+            'oldIndex' => 'required|integer',
+            'newIndex' => 'required|integer',
+            'id' => 'required|integer',
+            'displayTutorialId' => 'required|integer',
+            'status' => 'integer',
+            'addStatus' => 'integer',
+            'removeStatus' => 'integer',
         ];
     }
 
@@ -42,6 +44,8 @@ class MovingTaskRequest extends FormRequest
             'id' => 'タスクID',
             'displayTutorialId' => '表示中の教材ID',
             'status' => '進捗状態',
+            'addStatus' => '追加先の状態',
+            'removeStatus' => '削除元の状態',
         ];
     }
 }

@@ -6,9 +6,15 @@
             group="tasks"
             :list="displayTasks"
             @update="
-                $emit('update_status', status);
+                $emit('updateStatus', status);
                 $emit('update', $event);
             "
+            @add="$emit('addStatus', status)"
+            @remove="
+                $emit('removeStatus', status);
+                $emit('remove', $event);
+            "
+            ;
         >
             <div
                 v-for="task in displayTasks"

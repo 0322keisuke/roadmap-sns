@@ -51,41 +51,52 @@ class TaskController extends Controller
 
     public function update(MovingTaskRequest $request)
     {
-        \Debugbar::info($request->tasks);
+        if ($request->status) {
+            \Debugbar::info('同リスト内移動');
+            DB::table('tasks')->where('id', $request->id)->update(['order' => $request->newIndex]);
 
-        DB::table('tasks')->where('id', $request->id)->update(['order' => $request->newIndex]);
+            if ($request->oldIndex < $request->newIndex) {
+                DB::table('tasks')->where([
+                    ['tutorial_id', '=', $request->displayTutorialId],
+                    ['status', '=', $request->status],
+                    ['order', '>', $request->oldIndex],
+                    ['order', '<=', $request->newIndex],
+                    ['id', '<>', $request->id]
+                ])->decrement('order');
+            } elseif ($request->oldIndex > $request->newIndex) {
+                DB::table('tasks')->where([
+                    ['tutorial_id', '=', $request->displayTutorialId],
+                    ['status', '=', $request->status],
+                    ['order', '<', $request->oldIndex],
+                    ['order', '>=', $request->newIndex],
+                    ['id', '<>', $request->id]
+                ])->increment('order');
+            } else {
+                \Debugbar::info('Indexが変化していません');
+            }
+        } elseif ($request->removeStatus) {
+            \Debugbar::info('別リスト移動');
 
-        if ($request->oldIndex < $request->newIndex) {
-            \Debugbar::info('ケース１');
-            \Debugbar::info('displayTutorialId:'
-                . $request->displayTutorialId);
-            \Debugbar::info('status:' . $request->status);
-            \Debugbar::info('oldIndex:' . $request->oldIndex);
-            \Debugbar::info('newIndex:' . $request->newIndex);
-            \Debugbar::info('id:' . $request->id);
+            //移動したタスクのstatus,order更新
+            DB::table('tasks')->where('id', $request->id)->update(['status' => $request->addStatus, 'order' => $request->newIndex]);
 
+            //移動元の状態のorder更新
             DB::table('tasks')->where([
                 ['tutorial_id', '=', $request->displayTutorialId],
-                ['status', '=', $request->status],
+                ['status', '=', $request->removeStatus],
                 ['order', '>', $request->oldIndex],
-                ['order', '<=', $request->newIndex],
                 ['id', '<>', $request->id]
             ])->decrement('order');
-        } elseif ($request->oldIndex > $request->newIndex) {
-            \Debugbar::info('ケース２');
-            \Debugbar::info('oldIndex:' . $request->oldIndex);
-            \Debugbar::info('newIndex:' . $request->newIndex);
-            \Debugbar::info('id:' . $request->id);
 
+            //移動先の状態のorder更新
             DB::table('tasks')->where([
                 ['tutorial_id', '=', $request->displayTutorialId],
-                ['status', '=', $request->status],
-                ['order', '<', $request->oldIndex],
-                ['order', '>=', $request->newIndex],
+                ['status', '=', $request->addStatus],
+                ['order', '>', $request->newIndex],
                 ['id', '<>', $request->id]
             ])->increment('order');
         } else {
-            \Debugbar::info('Indexが変化していません');
+            \Debugbar::info('Update処理していません。');
         }
     }
 

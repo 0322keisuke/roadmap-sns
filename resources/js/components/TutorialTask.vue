@@ -9,8 +9,11 @@
                 :title="task.title"
                 :status="task.status"
                 :displayTasks="task.tasks"
-                @update_status="updateTaskStatus = $event"
+                @updateStatus="updateStatus = $event"
                 @update="updateTask"
+                @addStatus="addStatus = $event"
+                @removeStatus="removeStatus = $event"
+                @remove="AddandRemoveTask"
             />
         </div>
     </div>
@@ -41,7 +44,7 @@ export default {
     },
     data() {
         return {
-            updateTaskStatus: 0,
+            updateStatus: 0,
             addStatus: 0,
             removeStatus: 0
         };
@@ -71,13 +74,26 @@ export default {
                     tasks: this.tasks,
                     oldIndex: event.oldIndex,
                     newIndex: event.newIndex,
-                    id: this.DisplayTasks[this.updateTaskStatus - 1]["tasks"][
+                    id: this.DisplayTasks[this.updateStatus - 1]["tasks"][
                         event.newIndex
                     ].id,
                     displayTutorialId: this.display_tutorial_id,
-                    status: this.updateTaskStatus
+                    status: this.updateStatus
                 });
             }
+        },
+        AddandRemoveTask: function(event) {
+            this.$store.dispatch("task/updateTask", {
+                tasks: this.tasks,
+                oldIndex: event.oldIndex,
+                newIndex: event.newIndex,
+                id: this.DisplayTasks[this.addStatus - 1]["tasks"][
+                    event.newIndex
+                ].id,
+                displayTutorialId: this.display_tutorial_id,
+                addStatus: this.addStatus,
+                removeStatus: this.removeStatus
+            });
         }
     }
 };
