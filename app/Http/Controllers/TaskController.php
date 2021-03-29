@@ -110,13 +110,19 @@ class TaskController extends Controller
     {
         $task->delete();
 
+        DB::table('tasks')->where([
+            ['tutorial_id', '=', $task->tutorial_id],
+            ['status', '=', $task->status],
+            ['order', '>', $task->order],
+        ])->decrement('order');
+
         $tutorials = Auth::user()->tutorials()->orderBy('created_at')->get();
 
         $tasks = [];
 
         foreach ($tutorials as $tutorial) {
 
-            $temp_tasks = Task::where('tutorial_id', $tutorial->id)->orderBy('created_at')->get()->toArray();
+            $temp_tasks = Task::where('tutorial_id', $tutorial->id)->orderByRaw('status asc,"order" asc')->get()->toArray();
 
             $todo = array_filter($temp_tasks, function ($value) {
                 return $value['status'] == 1;
