@@ -14,9 +14,15 @@ class TaskController extends Controller
 {
     public function store(TaskRequest $request, Task $task)
     {
+        $max_order = DB::table('tasks')->where([
+            ['tutorial_id', '=', $request->tutorial_id],
+            ['status', '=', $request->status]
+        ])->max('order');
+        \Debugbar::info($max_order);
+
         $task->name = $request->name;
         $task->tutorial_id = $request->tutorial_id;
-        $task->order = 1;
+        $task->order = $max_order + 1;
         $task->status = $request->status;
         $task->save();
 
@@ -26,7 +32,7 @@ class TaskController extends Controller
 
         foreach ($tutorials as $tutorial) {
 
-            $temp_tasks = Task::where('tutorial_id', $tutorial->id)->orderBy('created_at')->get()->toArray();
+            $temp_tasks = Task::where('tutorial_id', $tutorial->id)->orderByRaw('status asc,"order" asc')->get()->toArray();
 
             $todo = array_filter($temp_tasks, function ($value) {
                 return $value['status'] == 1;
@@ -51,41 +57,52 @@ class TaskController extends Controller
 
     public function update(MovingTaskRequest $request)
     {
-        \Debugbar::info($request->tasks);
+        if ($request->status) {
+            \Debugbar::info('同リスト内移動');
+            DB::table('tasks')->where('id', $request->id)->update(['order' => $request->newIndex]);
 
-        DB::table('tasks')->where('id', $request->id)->update(['order' => $request->newIndex]);
+            if ($request->oldIndex < $request->newIndex) {
+                DB::table('tasks')->where([
+                    ['tutorial_id', '=', $request->displayTutorialId],
+                    ['status', '=', $request->status],
+                    ['order', '>', $request->oldIndex],
+                    ['order', '<=', $request->newIndex],
+                    ['id', '<>', $request->id]
+                ])->decrement('order');
+            } elseif ($request->oldIndex > $request->newIndex) {
+                DB::table('tasks')->where([
+                    ['tutorial_id', '=', $request->displayTutorialId],
+                    ['status', '=', $request->status],
+                    ['order', '<', $request->oldIndex],
+                    ['order', '>=', $request->newIndex],
+                    ['id', '<>', $request->id]
+                ])->increment('order');
+            } else {
+                \Debugbar::info('Indexが変化していません');
+            }
+        } elseif ($request->removeStatus) {
+            \Debugbar::info('別リスト移動');
 
-        if ($request->oldIndex < $request->newIndex) {
-            \Debugbar::info('ケース１');
-            \Debugbar::info('displayTutorialId:'
-                . $request->displayTutorialId);
-            \Debugbar::info('status:' . $request->status);
-            \Debugbar::info('oldIndex:' . $request->oldIndex);
-            \Debugbar::info('newIndex:' . $request->newIndex);
-            \Debugbar::info('id:' . $request->id);
+            //移動したタスクのstatus,order更新
+            DB::table('tasks')->where('id', $request->id)->update(['status' => $request->addStatus, 'order' => $request->newIndex]);
 
+            //移動元の状態のorder更新
             DB::table('tasks')->where([
                 ['tutorial_id', '=', $request->displayTutorialId],
-                ['status', '=', $request->status],
+                ['status', '=', $request->removeStatus],
                 ['order', '>', $request->oldIndex],
-                ['order', '<=', $request->newIndex],
                 ['id', '<>', $request->id]
             ])->decrement('order');
-        } elseif ($request->oldIndex > $request->newIndex) {
-            \Debugbar::info('ケース２');
-            \Debugbar::info('oldIndex:' . $request->oldIndex);
-            \Debugbar::info('newIndex:' . $request->newIndex);
-            \Debugbar::info('id:' . $request->id);
 
+            //移動先の状態のorder更新
             DB::table('tasks')->where([
                 ['tutorial_id', '=', $request->displayTutorialId],
-                ['status', '=', $request->status],
-                ['order', '<', $request->oldIndex],
-                ['order', '>=', $request->newIndex],
+                ['status', '=', $request->addStatus],
+                ['order', '>', $request->newIndex],
                 ['id', '<>', $request->id]
             ])->increment('order');
         } else {
-            \Debugbar::info('Indexが変化していません');
+            \Debugbar::info('Update処理していません。');
         }
     }
 
@@ -93,13 +110,19 @@ class TaskController extends Controller
     {
         $task->delete();
 
+        DB::table('tasks')->where([
+            ['tutorial_id', '=', $task->tutorial_id],
+            ['status', '=', $task->status],
+            ['order', '>', $task->order],
+        ])->decrement('order');
+
         $tutorials = Auth::user()->tutorials()->orderBy('created_at')->get();
 
         $tasks = [];
 
         foreach ($tutorials as $tutorial) {
 
-            $temp_tasks = Task::where('tutorial_id', $tutorial->id)->orderBy('created_at')->get()->toArray();
+            $temp_tasks = Task::where('tutorial_id', $tutorial->id)->orderByRaw('status asc,"order" asc')->get()->toArray();
 
             $todo = array_filter($temp_tasks, function ($value) {
                 return $value['status'] == 1;

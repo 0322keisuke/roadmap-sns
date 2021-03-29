@@ -5,11 +5,16 @@
         <draggable
             group="tasks"
             :list="displayTasks"
-            @end="
-                $emit('status', status);
-                $emit('change', $event);
-                dropevent($event);
+            @update="
+                $emit('updateStatus', status);
+                $emit('update', $event);
             "
+            @add="$emit('addStatus', status)"
+            @remove="
+                $emit('removeStatus', status);
+                $emit('remove', $event);
+            "
+            ;
         >
             <div
                 v-for="task in displayTasks"
@@ -54,9 +59,6 @@ export default {
                     id: task.id
                 });
             }
-        },
-        dropevent(event) {
-            console.log(event);
         }
     }
 };
