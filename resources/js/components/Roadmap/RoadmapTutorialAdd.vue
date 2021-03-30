@@ -44,8 +44,10 @@ export default {
     },
 
     methods: {
-        async addList() {
-            await this.$store.dispatch("roadmap/addlist", {
+        addList() {
+            if (!this.title) return;
+
+            this.$store.dispatch("roadmap/addlist", {
                 title: this.title
             });
             this.title = "";
