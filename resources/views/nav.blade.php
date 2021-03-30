@@ -38,14 +38,14 @@
         <button class="dropdown-item" type="button" onclick="location.href=''">
           マイページ
         </button>
-        <div class="dropdown-divider"></div>
+        <!-- <div class="dropdown-divider"></div>
         <button class="dropdown-item" type="button" onclick="location.href=''">
           お気に入り教材
         </button>
         <div class="dropdown-divider"></div>
         <button class="dropdown-item" type="button" onclick="location.href=''">
           完了した教材
-        </button>
+        </button> -->
         <div class="dropdown-divider"></div>
         <button form="logout-button" class="dropdown-item" type="submit">
           ログアウト
