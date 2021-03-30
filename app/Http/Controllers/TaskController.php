@@ -18,7 +18,6 @@ class TaskController extends Controller
             ['tutorial_id', '=', $request->tutorial_id],
             ['status', '=', $request->status]
         ])->max('order');
-        \Debugbar::info($max_order);
 
         $task->name = $request->name;
         $task->tutorial_id = $request->tutorial_id;
