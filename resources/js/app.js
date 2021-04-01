@@ -4,6 +4,7 @@ import store from "./store";
 import RoadmapTutorial from "./components/Roadmap/RoadmapTutorial";
 import RoadmapLike from "./components/RoadmapLike";
 import TutorialTask from "./components/TutorialTask";
+import FollowButton from "./components/FollowButton";
 
 const app = new Vue({
     el: "#app",
@@ -11,6 +12,7 @@ const app = new Vue({
     components: {
         RoadmapTutorial,
         RoadmapLike,
-        TutorialTask
+        TutorialTask,
+        FollowButton
     }
 });
