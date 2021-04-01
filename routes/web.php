@@ -37,3 +37,7 @@ Route::prefix('roadmaps')->name('roadmaps.')->group(function () { {
     Route::delete('/{roadmap}/like', 'RoadmapController@unlike')->name('unlike')->middleware('auth');
   }
 });
+
+Route::prefix('users')->name('users.')->group(function () {
+  Route::get('/{name}', 'UserController@show')->name('show');
+});

@@ -15,13 +15,15 @@ class RoadmapsTableSeeder extends Seeder
     {
         $user = DB::table('users')->where('email', 'guest@guest.com')->first();
 
-        $titles = ['Webサイトの仕組みを知る', 'Webアプリケーションの公開', 'チームでのアプリケーション開発'];
+        $titles = ['Webページを作ろう', 'Webアプリケーションを形にしよう', 'みんなでアプリケーションを開発しよう'];
+        $bodys = ['簡単なオリジナルのWebページの開発をローカル環境で行い、インターネット上に公開するまでを学びます。
+        ', '会員制サイトや商品検索ページなどの機能を持つWebアプリケーションを開発するスキルを身に付けましょう', 'チーム開発ではお互いの得意なことで助け合ったり、より大規模な開発に挑戦できたりなど、1人では体験できないことがたくさんあります。チームで開発するために必要なスキルを確認しましょう。'];
         $counter = 0;
 
         foreach ($titles as $title) {
             DB::table('roadmaps')->insert([
                 'title' => $title,
-                'body' => "本文",
+                'body' => $bodys[$counter],
                 'user_id' => $user->id,
                 'estimated_time' => $counter + 10,
                 'level' => $counter + 1,

@@ -11,15 +11,17 @@
       <div class="card h-100">
         <a class="text-dark" href="{{route('roadmaps.show',['roadmap' => $roadmap])}}">
           <div class="card-body d-flex flex-row">
-            <i class="fas fa-user-circle fa-3x mr-1"></i>
-            <div>
-              <div class="font-weight-bold">
-                {{ $roadmap->user->name }}
+            <a href="{{ route('users.show', ['name' => $roadmap->user->name]) }}" class="text-dark">
+              <i class="fas fa-user-circle fa-3x mr-1"></i>
+              <div>
+                <div class="font-weight-bold">
+                  <a href="{{ route('users.show', ['name' => $roadmap->user->name]) }}" class="text-dark">
+                    {{ $roadmap->user->name }}
+                </div>
+                <div class="font-weight-lighter">
+                  {{ $roadmap->created_at->format('Y/m/d H:i') }}
+                </div>
               </div>
-              <div class="font-weight-lighter">
-                {{ $roadmap->created_at->format('Y/m/d H:i') }}
-              </div>
-            </div>
           </div>
           <div class="card-body pt-0 pb-2">
             <h3 class="h4 card-title">

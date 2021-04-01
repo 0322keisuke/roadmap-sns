@@ -14,6 +14,8 @@ class DatabaseSeeder extends Seeder
         //親テーブルから先に作成するよう、実行順番に注意する。
         $this->call(UsersTableSeeder::class);
         $this->call(RoadmapsTableSeeder::class);
+        $this->call(RoadmapTutorialsTableSeeder::class);
+        $this->call(RoadmapTutorialTasksTableSeeder::class);
         $this->call(TutorialsTableSeeder::class);
         $this->call(TasksTableSeeder::class);
     }

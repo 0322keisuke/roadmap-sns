@@ -57,6 +57,8 @@ export default {
             this.isEditing = false;
         },
         addTaskToList: function() {
+            if (!this.name) return;
+
             this.$store.dispatch("roadmap/addtask", {
                 name: this.name,
                 listIndex: this.listIndex

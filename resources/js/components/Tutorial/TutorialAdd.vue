@@ -42,8 +42,10 @@ export default {
     },
 
     methods: {
-        async addList() {
-            await this.$store.dispatch("tutorial/addlist", {
+        addList() {
+            if (!this.title) return;
+
+            this.$store.dispatch("tutorial/addlist", {
                 title: this.title
             });
             this.title = "";
