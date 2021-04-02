@@ -14,7 +14,7 @@ class TutorialController extends Controller
     {
         $tutorials = Auth::user()->tutorials()->orderBy('created_at')->get();
 
-        $first_tutorial = Auth::user()->tutorials()->first(); //今後、もし教材を持っていなかったら別画面を表示する処理を追加する。
+        $first_tutorial = Auth::user()->tutorials()->first();
 
         $tasks = [];
 
@@ -38,11 +38,18 @@ class TutorialController extends Controller
             array_push($tasks, ['tutorial_id' => $tutorial->id, 'title' => 'Done', 'status' => 3, 'tasks' => array_values($done)]);
         }
 
-        return view('tutorials.index', [
-            'tutorials' => $tutorials,
-            'tasks' => $tasks,
-            'first_tutorial_id' => $first_tutorial->id,
-        ]);
+        if (is_null($first_tutorial)) {
+            return view('tutorials.index', [
+                'tutorials' => $tutorials,
+                'tasks' => $tasks,
+            ]);
+        } else {
+            return view('tutorials.index', [
+                'tutorials' => $tutorials,
+                'tasks' => $tasks,
+                'first_tutorial_id' => $first_tutorial->id,
+            ]);
+        }
     }
 
     public function store(TutorialRequest $request, Tutorial $tutorial)
