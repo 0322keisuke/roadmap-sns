@@ -19,6 +19,18 @@ class UserController extends Controller
         ]);
     }
 
+    public function likes(string $name)
+    {
+        $user = User::where('name', $name)->first();
+
+        $roadmaps = $user->likes->sortByDesc('created_at');
+
+        return view('users.likes', [
+            'user' => $user,
+            'roadmaps' => $roadmaps
+        ]);
+    }
+
     public function follow(Request $request, string $name)
     {
         $user = User::where('name', $name)->first();
