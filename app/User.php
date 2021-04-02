@@ -44,6 +44,11 @@ class User extends Authenticatable
         return $this->hasMany('App\Tutorial');
     }
 
+    public function roadmaps(): HasMany
+    {
+        return $this->hasMany('App\Roadmap');
+    }
+
     public function followers(): BelongsToMany
     {
         return $this->belongsToMany('App\User', 'follows', 'followee_id', 'follower_id')->withTimestamps();

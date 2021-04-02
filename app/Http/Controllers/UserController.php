@@ -11,8 +11,11 @@ class UserController extends Controller
     {
         $user = User::where('name', $name)->first();
 
+        $roadmaps = $user->roadmaps->sortByDesc('created_at');
+
         return view('users.show', [
             'user' => $user,
+            'roadmaps' => $roadmaps,
         ]);
     }
 
