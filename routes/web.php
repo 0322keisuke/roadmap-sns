@@ -40,4 +40,8 @@ Route::prefix('roadmaps')->name('roadmaps.')->group(function () { {
 
 Route::prefix('users')->name('users.')->group(function () {
   Route::get('/{name}', 'UserController@show')->name('show');
+  Route::middleware('auth')->group(function () {
+    Route::put('/{name}/follow', 'UserController@follow')->name('follow');
+    Route::delete('/{name}/follow', 'UserController@unfollow')->name('unfollow');
+  });
 });
