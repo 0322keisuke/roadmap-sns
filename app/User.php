@@ -44,6 +44,11 @@ class User extends Authenticatable
         return $this->hasMany('App\Tutorial');
     }
 
+    public function tasks()
+    {
+        return $this->hasManyThrough('App\Task', 'App\Tutorial');
+    }
+
     public function roadmaps(): HasMany
     {
         return $this->hasMany('App\Roadmap');

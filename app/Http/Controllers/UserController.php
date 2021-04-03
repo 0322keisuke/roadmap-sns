@@ -13,9 +13,12 @@ class UserController extends Controller
 
         $roadmaps = $user->roadmaps->sortByDesc('created_at');
 
+        $count_done_tasks = $user->tasks->where('status', 3)->makeHidden('laravel_through_key')->count();
+
         return view('users.show', [
             'user' => $user,
             'roadmaps' => $roadmaps,
+            'count_done_tasks' => $count_done_tasks
         ]);
     }
 
@@ -25,9 +28,12 @@ class UserController extends Controller
 
         $roadmaps = $user->likes->sortByDesc('created_at');
 
+        $count_done_tasks = $user->tasks->where('status', 3)->makeHidden('laravel_through_key')->count();
+
         return view('users.likes', [
             'user' => $user,
-            'roadmaps' => $roadmaps
+            'roadmaps' => $roadmaps,
+            'count_done_tasks' => $count_done_tasks
         ]);
     }
 
