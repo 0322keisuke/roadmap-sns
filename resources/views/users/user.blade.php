@@ -27,9 +27,13 @@
     </div>
   </div>
   <div class="card mt-3">
-    <div class="card-body">
-      <div class="d-flex flex-row">
-
+    <div class="card-body align-middle">
+      <div class="d-flex justify-content-center p-3">
+        <i class="fas fa-book fa-3x amber-text"></i>
+        <h2 class="text-center m-2 pl-2"> {{ $user->count_done_tutorials }} </h2>
+      </div>
+      <div class="card-text text-center">
+        完了教材数
       </div>
     </div>
   </div>
@@ -37,7 +41,7 @@
     <div class="card-body align-middle">
       <div class="d-flex justify-content-center p-3">
         <i class="fas fa-tasks fa-3x green-text"></i>
-        <h3 class="text-center m-2 pl-2"> {{ $user->count_done_tasks }} </h3>
+        <h2 class="text-center m-2 pl-2"> {{ $user->count_done_tasks }} </h2>
       </div>
       <div class="card-text text-center">
         総クリアタスク数

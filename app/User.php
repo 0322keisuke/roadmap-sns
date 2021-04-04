@@ -86,6 +86,11 @@ class User extends Authenticatable
         return $this->followings->count();
     }
 
+    public function getCountDoneTutorialsAttribute(): int
+    {
+        return $this->tutorials->where('status', 3)->count();
+    }
+
     public function getCountDoneTasksAttribute(): int
     {
         return $this->tasks->where('status', 3)->count();
