@@ -17,10 +17,10 @@
     </div>
     <div class="card-body">
       <div class="card-text">
-        <a href="" class="text-muted">
+        <a href="{{ route('users.followings',['name' => $user->name])}}" class="text-muted">
           {{ $user->count_followings }} フォロー
         </a>
-        <a href="" class="text-muted">
+        <a href="{{ route('users.followers', ['name' => $user->name]) }}" class="text-muted">
           {{ $user->count_followers }} フォロワー
         </a>
       </div>
@@ -37,7 +37,7 @@
     <div class="card-body align-middle">
       <div class="d-flex justify-content-center p-3">
         <i class="fas fa-tasks fa-3x green-text"></i>
-        <h3 class="text-center m-2 pl-2"> {{ $count_done_tasks }} </h3>
+        <h3 class="text-center m-2 pl-2"> {{ $user->count_done_tasks }} </h3>
       </div>
       <div class="card-text text-center">
         総クリアタスク数
