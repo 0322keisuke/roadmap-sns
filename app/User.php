@@ -39,6 +39,11 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function roadmaps(): HasMany
+    {
+        return $this->hasMany('App\Roadmap');
+    }
+
     public function tutorials(): HasMany
     {
         return $this->hasMany('App\Tutorial');
@@ -47,11 +52,6 @@ class User extends Authenticatable
     public function tasks()
     {
         return $this->hasManyThrough('App\Task', 'App\Tutorial');
-    }
-
-    public function roadmaps(): HasMany
-    {
-        return $this->hasMany('App\Roadmap');
     }
 
     public function followers(): BelongsToMany
@@ -84,5 +84,10 @@ class User extends Authenticatable
     public function getCountFollowingsAttribute(): int
     {
         return $this->followings->count();
+    }
+
+    public function getCountDoneTasksAttribute(): int
+    {
+        return $this->tasks->where('status', 3)->count();
     }
 }
