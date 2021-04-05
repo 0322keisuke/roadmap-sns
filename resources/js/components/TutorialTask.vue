@@ -31,6 +31,15 @@
                         学習中
                     </button>
                     <button
+                        v-if="!CheckingDoneTask"
+                        class="dropdown-item"
+                        type="button"
+                        disabled
+                    >
+                        完了(全タスクをDoneに移動すると選択できます。)
+                    </button>
+                    <button
+                        v-if="CheckingDoneTask"
                         class="dropdown-item"
                         type="button"
                         @click="updateTutorialStatus(3)"
@@ -109,6 +118,29 @@ export default {
             return this.tasks.filter(task => {
                 return task.tutorial_id === this.display_tutorial_id;
             });
+        },
+        CheckingDoneTask: function() {
+            const todo_tasks = this.DisplayTasks.filter(task => {
+                return task.status === 1;
+            });
+
+            const doing_tasks = this.DisplayTasks.filter(task => {
+                return task.status === 2;
+            });
+
+            const done_tasks = this.DisplayTasks.filter(task => {
+                return task.status === 3;
+            });
+
+            const count_todo_task = todo_tasks[0].tasks.length;
+            const count_doing_task = doing_tasks[0].tasks.length;
+            const count_done_task = done_tasks[0].tasks.length;
+
+            const count_all_task =
+                count_todo_task + count_doing_task + count_done_task;
+
+            if (count_all_task == 0) return false;
+            return count_all_task == count_done_task ? true : false;
         }
     },
     methods: {
