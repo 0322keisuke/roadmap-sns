@@ -1,6 +1,45 @@
 <template>
     <div>
-        <tutorial :initialTutorials="initialTutorials" />
+        <tutorial />
+
+        <div class="d-flex align-items-center mt-2" v-if="initialTutorialId">
+            <div class="mr-2">教材の学習状況:</div>
+            <div class="dropdown">
+                <button
+                    class="btn btn-info dropdown-toggle"
+                    type="button"
+                    id="dropdownMenu"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                >
+                    {{ status[tutorials[display_tutorial_listIndex].status] }}
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenu">
+                    <button
+                        class="dropdown-item"
+                        type="button"
+                        @click="updateTutorialStatus(1)"
+                    >
+                        計画中
+                    </button>
+                    <button
+                        class="dropdown-item"
+                        type="button"
+                        @click="updateTutorialStatus(2)"
+                    >
+                        学習中
+                    </button>
+                    <button
+                        class="dropdown-item"
+                        type="button"
+                        @click="updateTutorialStatus(3)"
+                    >
+                        完了
+                    </button>
+                </div>
+            </div>
+        </div>
 
         <div class="row mt-2">
             <task
@@ -46,10 +85,12 @@ export default {
         return {
             updateStatus: 0,
             addStatus: 0,
-            removeStatus: 0
+            removeStatus: 0,
+            status: { "1": "計画中", "2": "学習中", "3": "完了" }
         };
     },
-    mounted: function() {
+    created: function() {
+        this.$store.dispatch("tutorial/initiallist", this.initialTutorials);
         this.$store.dispatch(
             "tutorial/initialTutorialId",
             this.initialTutorialId
@@ -59,7 +100,10 @@ export default {
     computed: {
         ...mapState({
             tasks: state => state.task.tasks,
-            display_tutorial_id: state => state.tutorial.display_tutorial_id
+            tutorials: state => state.tutorial.lists,
+            display_tutorial_id: state => state.tutorial.display_tutorial_id,
+            display_tutorial_listIndex: state =>
+                state.tutorial.display_tutorial_listIndex
         }),
         DisplayTasks: function() {
             return this.tasks.filter(task => {
@@ -93,6 +137,12 @@ export default {
                 displayTutorialId: this.display_tutorial_id,
                 addStatus: this.addStatus,
                 removeStatus: this.removeStatus
+            });
+        },
+        updateTutorialStatus: function(status) {
+            this.$store.dispatch("tutorial/updateTutorialStatus", {
+                status: status,
+                listIndex: this.display_tutorial_listIndex
             });
         }
     }

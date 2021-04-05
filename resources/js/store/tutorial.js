@@ -1,14 +1,15 @@
 const state = {
     lists: [],
-    display_tutorial_id: 0
+    display_tutorial_id: 0,
+    display_tutorial_listIndex: 0
 };
 
 const mutations = {
-    initialTutorialId(state, payload) {
-        state.display_tutorial_id = payload;
-    },
     initiallist(state, payload) {
         state.lists = payload;
+    },
+    initialTutorialId(state, payload) {
+        state.display_tutorial_id = payload;
     },
     addlist(state, payload) {
         state.lists = payload.tutorials;
@@ -18,6 +19,10 @@ const mutations = {
     },
     changeDisplayTutorialId(state, payload) {
         state.display_tutorial_id = payload.id;
+        state.display_tutorial_listIndex = payload.listIndex;
+    },
+    updateTutorialStatus(state, payload) {
+        state.lists[payload.listIndex].status = payload.status;
     }
 };
 
@@ -25,8 +30,8 @@ const actions = {
     initialTutorialId(context, payload) {
         context.commit("initialTutorialId", payload);
     },
-    async initiallist(context, payload) {
-        await context.commit("initiallist", payload);
+    initiallist(context, payload) {
+        context.commit("initiallist", payload);
     },
     async addlist(context, payload) {
         const response = await axios.post("/tutorials/store", payload);
@@ -42,6 +47,9 @@ const actions = {
     },
     changeDisplayTutorialId(context, payload) {
         context.commit("changeDisplayTutorialId", payload);
+    },
+    updateTutorialStatus(context, payload) {
+        context.commit("updateTutorialStatus", payload);
     }
 };
 

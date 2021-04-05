@@ -40,7 +40,8 @@ export default {
         },
         changeDisplayTutorialId: function() {
             this.$store.dispatch("tutorial/changeDisplayTutorialId", {
-                id: this.id
+                id: this.id,
+                listIndex: this.listIndex
             });
         }
     },
