@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Tutorial;
 use App\Task;
 use App\Http\Requests\TutorialRequest;
+use App\Http\Requests\TutorialStatusRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -12,9 +13,9 @@ class TutorialController extends Controller
 {
     public function index()
     {
-        $tutorials = Auth::user()->tutorials()->orderBy('created_at')->get();
+        $tutorials = Auth::user()->tutorials()->orderByRaw('created_at asc,id asc')->get();
 
-        $first_tutorial = Auth::user()->tutorials()->first();
+        $first_tutorial = Auth::user()->tutorials()->orderByRaw('created_at asc,id asc')->first();
 
         $tasks = [];
 
@@ -78,5 +79,11 @@ class TutorialController extends Controller
         return [
             'tutorials' => $tutorials,
         ];
+    }
+
+    public function status(TutorialStatusRequest $request, Tutorial $tutorial)
+    {
+        $tutorial->status = $request->status;
+        $tutorial->save();
     }
 }

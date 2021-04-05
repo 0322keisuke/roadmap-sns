@@ -48,7 +48,9 @@ const actions = {
     changeDisplayTutorialId(context, payload) {
         context.commit("changeDisplayTutorialId", payload);
     },
-    updateTutorialStatus(context, payload) {
+    async updateTutorialStatus(context, payload) {
+        await axios.patch(`/tutorials/${payload.id}/status`, payload);
+
         context.commit("updateTutorialStatus", payload);
     }
 };

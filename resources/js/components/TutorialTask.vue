@@ -142,6 +142,7 @@ export default {
         updateTutorialStatus: function(status) {
             this.$store.dispatch("tutorial/updateTutorialStatus", {
                 status: status,
+                id: this.display_tutorial_id,
                 listIndex: this.display_tutorial_listIndex
             });
         }
