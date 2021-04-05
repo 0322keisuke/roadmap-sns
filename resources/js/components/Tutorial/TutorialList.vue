@@ -6,7 +6,13 @@
             @click="changeDisplayTutorialId"
         >
             <p class="m-1 pr-5 text-nowrap">{{ title }}</p>
-            <div class="deletelist" @click="removeTutorial">×</div>
+            <div
+                v-if="this.id != display_tutorial_id"
+                class="deletelist"
+                @click="removeTutorial"
+            >
+                ×
+            </div>
         </button>
     </div>
 </template>
