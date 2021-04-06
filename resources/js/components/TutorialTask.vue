@@ -2,86 +2,98 @@
     <div>
         <tutorial />
 
-        <div class="d-flex align-items-center mt-2" v-if="initialTutorialId">
-            <div class="mr-2">教材の学習状況:</div>
-            <div class="dropdown">
-                <button
-                    class="btn btn-info dropdown-toggle"
-                    type="button"
-                    id="dropdownMenu"
-                    data-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                >
-                    {{ status[tutorials[display_tutorial_listIndex].status] }}
-                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenu">
+        <div
+            class="d-flex flex-wrap align-items-center mt-2"
+            v-if="initialTutorialId"
+        >
+            <div class="d-flex align-items-center">
+                <div>教材の学習状況:</div>
+                <div class="dropdown mr-3">
                     <button
-                        class="dropdown-item"
+                        class="btn btn-info dropdown-toggle"
                         type="button"
-                        @click="updateTutorialStatus(1)"
+                        id="dropdownMenu"
+                        data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false"
                     >
-                        計画中
+                        {{
+                            status[tutorials[display_tutorial_listIndex].status]
+                        }}
                     </button>
-                    <button
-                        class="dropdown-item"
-                        type="button"
-                        @click="updateTutorialStatus(2)"
+                    <div
+                        class="dropdown-menu mr-5"
+                        aria-labelledby="dropdownMenu"
                     >
-                        学習中
-                    </button>
-                    <button
-                        v-if="!CheckingDoneTask"
-                        class="dropdown-item"
-                        type="button"
-                        disabled
-                    >
-                        完了(全タスクをDoneに移動すると選択できます。)
-                    </button>
-                    <button
-                        v-if="CheckingDoneTask"
-                        class="dropdown-item"
-                        type="button"
-                        @click="updateTutorialStatus(3)"
-                    >
-                        完了
-                    </button>
+                        <button
+                            class="dropdown-item"
+                            type="button"
+                            @click="updateTutorialStatus(1)"
+                        >
+                            計画中
+                        </button>
+                        <button
+                            class="dropdown-item"
+                            type="button"
+                            @click="updateTutorialStatus(2)"
+                        >
+                            学習中
+                        </button>
+                        <button
+                            v-if="!CheckingDoneTask"
+                            class="dropdown-item"
+                            type="button"
+                            disabled
+                        >
+                            完了(全タスクをDoneに移動すると選択できます。)
+                        </button>
+                        <button
+                            v-if="CheckingDoneTask"
+                            class="dropdown-item"
+                            type="button"
+                            @click="updateTutorialStatus(3)"
+                        >
+                            完了
+                        </button>
+                    </div>
                 </div>
             </div>
-            <div class="ml-5">学習の進捗率</div>
-            <div class="progress ml-2 flex-fill">
-                <div
-                    v-if="DisplayTasks[0].tasks.length"
-                    class="progress-bar"
-                    :style="{ width: TodoProgress + '%' }"
-                    role="progressbar"
-                    :aria-valuenow="TodoProgress"
-                    aria-valuemin="0"
-                    aria-valuemax="100"
-                >
-                    Todo:{{ TodoProgress }}%
-                </div>
-                <div
-                    v-if="DisplayTasks[1].tasks.length"
-                    class="progress-bar bg-warning"
-                    :style="{ width: DoingProgress + '%' }"
-                    role="progressbar"
-                    :aria-valuenow="DoingProgress"
-                    aria-valuemin="0"
-                    aria-valuemax="100"
-                >
-                    Doing:{{ DoingProgress }}%
-                </div>
-                <div
-                    v-if="DisplayTasks[2].tasks.length"
-                    class="progress-bar bg-success"
-                    :style="{ width: DoneProgress + '%' }"
-                    role="progressbar"
-                    :aria-valuenow="DoingProgress"
-                    aria-valuemin="0"
-                    aria-valuemax="100"
-                >
-                    Done:{{ DoneProgress }}%
+            <div class="d-flex flex-fill align-items-center mt-2">
+                <div>学習の進捗率</div>
+                <div class="progress ml-2 flex-fill">
+                    <div
+                        v-if="DisplayTasks[0].tasks.length"
+                        class="progress-bar"
+                        :style="{ width: TodoProgress + '%' }"
+                        role="progressbar"
+                        :aria-valuenow="TodoProgress"
+                        aria-valuemin="0"
+                        aria-valuemax="100"
+                    >
+                        Todo:{{ TodoProgress }}%
+                    </div>
+                    <div
+                        v-if="DisplayTasks[1].tasks.length"
+                        class="progress-bar bg-warning"
+                        :style="{ width: DoingProgress + '%' }"
+                        role="progressbar"
+                        :aria-valuenow="DoingProgress"
+                        aria-valuemin="0"
+                        aria-valuemax="100"
+                    >
+                        Doing:{{ DoingProgress }}%
+                    </div>
+                    <div
+                        v-if="DisplayTasks[2].tasks.length"
+                        class="progress-bar bg-success"
+                        :style="{ width: DoneProgress + '%' }"
+                        role="progressbar"
+                        :aria-valuenow="DoingProgress"
+                        aria-valuemin="0"
+                        aria-valuemax="100"
+                    >
+                        Done:{{ DoneProgress }}%
+                    </div>
                 </div>
             </div>
         </div>
