@@ -48,6 +48,42 @@
                     </button>
                 </div>
             </div>
+            <div class="ml-5">学習の進捗率</div>
+            <div class="progress ml-2 flex-fill">
+                <div
+                    v-if="DisplayTasks[0].tasks.length"
+                    class="progress-bar"
+                    :style="{ width: TodoProgress + '%' }"
+                    role="progressbar"
+                    :aria-valuenow="TodoProgress"
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                >
+                    Todo:{{ TodoProgress }}%
+                </div>
+                <div
+                    v-if="DisplayTasks[1].tasks.length"
+                    class="progress-bar bg-warning"
+                    :style="{ width: DoingProgress + '%' }"
+                    role="progressbar"
+                    :aria-valuenow="DoingProgress"
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                >
+                    Doing:{{ DoingProgress }}%
+                </div>
+                <div
+                    v-if="DisplayTasks[2].tasks.length"
+                    class="progress-bar bg-success"
+                    :style="{ width: DoneProgress + '%' }"
+                    role="progressbar"
+                    :aria-valuenow="DoingProgress"
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                >
+                    Done:{{ DoneProgress }}%
+                </div>
+            </div>
         </div>
 
         <div class="row mt-2">
@@ -120,27 +156,48 @@ export default {
             });
         },
         CheckingDoneTask: function() {
-            const todo_tasks = this.DisplayTasks.filter(task => {
-                return task.status === 1;
-            });
-
-            const doing_tasks = this.DisplayTasks.filter(task => {
-                return task.status === 2;
-            });
-
-            const done_tasks = this.DisplayTasks.filter(task => {
-                return task.status === 3;
-            });
-
-            const count_todo_task = todo_tasks[0].tasks.length;
-            const count_doing_task = doing_tasks[0].tasks.length;
-            const count_done_task = done_tasks[0].tasks.length;
+            const count_todo_task = this.DisplayTasks[0].tasks.length;
+            const count_doing_task = this.DisplayTasks[1].tasks.length;
+            const count_done_task = this.DisplayTasks[2].tasks.length;
 
             const count_all_task =
                 count_todo_task + count_doing_task + count_done_task;
 
             if (count_all_task == 0) return false;
             return count_all_task == count_done_task ? true : false;
+        },
+        TodoProgress: function() {
+            const count_todo_task = this.DisplayTasks[0].tasks.length;
+            const count_doing_task = this.DisplayTasks[1].tasks.length;
+            const count_done_task = this.DisplayTasks[2].tasks.length;
+
+            const count_all_task =
+                count_todo_task + count_doing_task + count_done_task;
+
+            if (!count_all_task) return 0;
+            return Math.round((count_todo_task / count_all_task) * 100);
+        },
+        DoingProgress: function() {
+            const count_todo_task = this.DisplayTasks[0].tasks.length;
+            const count_doing_task = this.DisplayTasks[1].tasks.length;
+            const count_done_task = this.DisplayTasks[2].tasks.length;
+
+            const count_all_task =
+                count_todo_task + count_doing_task + count_done_task;
+
+            if (!count_all_task) return 0;
+            return Math.round((count_doing_task / count_all_task) * 100);
+        },
+        DoneProgress: function() {
+            const count_todo_task = this.DisplayTasks[0].tasks.length;
+            const count_doing_task = this.DisplayTasks[1].tasks.length;
+            const count_done_task = this.DisplayTasks[2].tasks.length;
+
+            const count_all_task =
+                count_todo_task + count_doing_task + count_done_task;
+
+            if (!count_all_task) return 0;
+            return Math.round((count_done_task / count_all_task) * 100);
         }
     },
     methods: {
