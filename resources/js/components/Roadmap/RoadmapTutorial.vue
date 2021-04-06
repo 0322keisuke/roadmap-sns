@@ -61,7 +61,7 @@ export default {
             return JSON.stringify(this.lists);
         }
     },
-    mounted: function() {
+    created: function() {
         this.$store.dispatch("roadmap/setEditable", this.getEditable);
 
         //"直前の入力値(old)"もしくは"DBの値(initialLists)"がある場合のみ、初期をセットする。
