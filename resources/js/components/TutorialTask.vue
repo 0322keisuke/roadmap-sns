@@ -1,6 +1,102 @@
 <template>
     <div>
-        <tutorial :initialTutorials="initialTutorials" />
+        <tutorial />
+
+        <div
+            class="d-flex flex-wrap align-items-center mt-2"
+            v-if="initialTutorialId"
+        >
+            <div class="d-flex align-items-center">
+                <div>教材の学習状況:</div>
+                <div class="dropdown mr-3">
+                    <button
+                        class="btn btn-info dropdown-toggle"
+                        type="button"
+                        id="dropdownMenu"
+                        data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                    >
+                        {{
+                            status[tutorials[display_tutorial_listIndex].status]
+                        }}
+                    </button>
+                    <div
+                        class="dropdown-menu mr-5"
+                        aria-labelledby="dropdownMenu"
+                    >
+                        <button
+                            class="dropdown-item"
+                            type="button"
+                            @click="updateTutorialStatus(1)"
+                        >
+                            計画中
+                        </button>
+                        <button
+                            class="dropdown-item"
+                            type="button"
+                            @click="updateTutorialStatus(2)"
+                        >
+                            学習中
+                        </button>
+                        <button
+                            v-if="!CheckingDoneTask"
+                            class="dropdown-item"
+                            type="button"
+                            disabled
+                        >
+                            完了(全タスクをDoneに移動すると選択できます。)
+                        </button>
+                        <button
+                            v-if="CheckingDoneTask"
+                            class="dropdown-item"
+                            type="button"
+                            @click="updateTutorialStatus(3)"
+                        >
+                            完了
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex flex-fill align-items-center mt-2">
+                <div>学習の進捗率</div>
+                <div class="progress ml-2 flex-fill">
+                    <div
+                        v-if="DisplayTasks[0].tasks.length"
+                        class="progress-bar"
+                        :style="{ width: TodoProgress + '%' }"
+                        role="progressbar"
+                        :aria-valuenow="TodoProgress"
+                        aria-valuemin="0"
+                        aria-valuemax="100"
+                    >
+                        Todo:{{ TodoProgress }}%
+                    </div>
+                    <div
+                        v-if="DisplayTasks[1].tasks.length"
+                        class="progress-bar bg-warning"
+                        :style="{ width: DoingProgress + '%' }"
+                        role="progressbar"
+                        :aria-valuenow="DoingProgress"
+                        aria-valuemin="0"
+                        aria-valuemax="100"
+                    >
+                        Doing:{{ DoingProgress }}%
+                    </div>
+                    <div
+                        v-if="DisplayTasks[2].tasks.length"
+                        class="progress-bar bg-success"
+                        :style="{ width: DoneProgress + '%' }"
+                        role="progressbar"
+                        :aria-valuenow="DoingProgress"
+                        aria-valuemin="0"
+                        aria-valuemax="100"
+                    >
+                        Done:{{ DoneProgress }}%
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <div class="row mt-2">
             <task
@@ -46,10 +142,12 @@ export default {
         return {
             updateStatus: 0,
             addStatus: 0,
-            removeStatus: 0
+            removeStatus: 0,
+            status: { "1": "計画中", "2": "学習中", "3": "完了" }
         };
     },
-    mounted: function() {
+    created: function() {
+        this.$store.dispatch("tutorial/initiallist", this.initialTutorials);
         this.$store.dispatch(
             "tutorial/initialTutorialId",
             this.initialTutorialId
@@ -59,12 +157,59 @@ export default {
     computed: {
         ...mapState({
             tasks: state => state.task.tasks,
-            display_tutorial_id: state => state.tutorial.display_tutorial_id
+            tutorials: state => state.tutorial.lists,
+            display_tutorial_id: state => state.tutorial.display_tutorial_id,
+            display_tutorial_listIndex: state =>
+                state.tutorial.display_tutorial_listIndex
         }),
         DisplayTasks: function() {
             return this.tasks.filter(task => {
                 return task.tutorial_id === this.display_tutorial_id;
             });
+        },
+        CheckingDoneTask: function() {
+            const count_todo_task = this.DisplayTasks[0].tasks.length;
+            const count_doing_task = this.DisplayTasks[1].tasks.length;
+            const count_done_task = this.DisplayTasks[2].tasks.length;
+
+            const count_all_task =
+                count_todo_task + count_doing_task + count_done_task;
+
+            if (count_all_task == 0) return false;
+            return count_all_task == count_done_task ? true : false;
+        },
+        TodoProgress: function() {
+            const count_todo_task = this.DisplayTasks[0].tasks.length;
+            const count_doing_task = this.DisplayTasks[1].tasks.length;
+            const count_done_task = this.DisplayTasks[2].tasks.length;
+
+            const count_all_task =
+                count_todo_task + count_doing_task + count_done_task;
+
+            if (!count_all_task) return 0;
+            return Math.round((count_todo_task / count_all_task) * 100);
+        },
+        DoingProgress: function() {
+            const count_todo_task = this.DisplayTasks[0].tasks.length;
+            const count_doing_task = this.DisplayTasks[1].tasks.length;
+            const count_done_task = this.DisplayTasks[2].tasks.length;
+
+            const count_all_task =
+                count_todo_task + count_doing_task + count_done_task;
+
+            if (!count_all_task) return 0;
+            return Math.round((count_doing_task / count_all_task) * 100);
+        },
+        DoneProgress: function() {
+            const count_todo_task = this.DisplayTasks[0].tasks.length;
+            const count_doing_task = this.DisplayTasks[1].tasks.length;
+            const count_done_task = this.DisplayTasks[2].tasks.length;
+
+            const count_all_task =
+                count_todo_task + count_doing_task + count_done_task;
+
+            if (!count_all_task) return 0;
+            return Math.round((count_done_task / count_all_task) * 100);
         }
     },
     methods: {
@@ -93,6 +238,13 @@ export default {
                 displayTutorialId: this.display_tutorial_id,
                 addStatus: this.addStatus,
                 removeStatus: this.removeStatus
+            });
+        },
+        updateTutorialStatus: function(status) {
+            this.$store.dispatch("tutorial/updateTutorialStatus", {
+                status: status,
+                id: this.display_tutorial_id,
+                listIndex: this.display_tutorial_listIndex
             });
         }
     }

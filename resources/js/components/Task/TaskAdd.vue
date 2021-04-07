@@ -8,14 +8,16 @@
             @focusin="startEditing"
             @focusout="finishEditing"
         />
-        <button
-            @click.prevent="addTaskToList"
-            class="text-white border-0 rounded-pill"
-            :class="[nameExists ? 'teal sccent-4' : 'stylish-color']"
-            v-if="isEditing || nameExists"
-        >
-            タスクを追加
-        </button>
+        <div class="m-1">
+            <button
+                @click.prevent="addTaskToList"
+                class="text-white border-0 rounded-pill"
+                :class="[nameExists ? 'teal sccent-4' : 'stylish-color']"
+                v-if="isEditing || nameExists"
+            >
+                タスクを追加
+            </button>
+        </div>
     </form>
 </template>
 <script>

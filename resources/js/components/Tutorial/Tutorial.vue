@@ -25,20 +25,6 @@ export default {
         TutorialAdd,
         TutorialList
     },
-    props: {
-        initialTutorials: {
-            type: Array,
-            default: []
-        }
-    },
-    data() {
-        return {
-            getLists: this.initialTutorials
-        };
-    },
-    mounted: function() {
-        this.$store.dispatch("tutorial/initiallist", this.getLists);
-    },
     computed: {
         ...mapState({
             lists: state => state.tutorial.lists

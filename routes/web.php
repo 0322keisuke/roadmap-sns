@@ -17,15 +17,17 @@ Auth::routes();
 Route::get('/login/guest', 'Auth\LoginController@authenticate');
 Route::get('/', 'RoadmapController@index')->name('roadmaps.index');
 
-
 Route::get('/roadmaps/create', 'RoadmapController@create')->name('roadmaps.create')->middleware('auth');
 Route::post('/roadmaps/store', 'RoadmapController@store')->name('roadmaps.store')->middleware('auth');
 
 Route::get('/roadmaps/{roadmap}', 'RoadmapController@show')->name('roadmaps.show');
+Route::post('/roadmaps/allcopy', 'RoadmapController@allcopy');
+Route::post('/roadmaps/copy', 'RoadmapController@copy');
 
 Route::get('/tutorials', 'TutorialController@index')->name('tutorials.index')->middleware('auth');
 Route::post('/tutorials/store', 'TutorialController@store')->middleware('auth');
 Route::delete('/tutorials/{tutorial}/destroy', 'TutorialController@destroy')->middleware('auth');
+Route::match(['put', 'patch'], '/tutorials/{tutorial}/status', 'TutorialController@status')->middleware('auth');
 
 Route::post('/tasks/store', 'TaskController@store')->middleware('auth');
 Route::match(['put', 'patch'], '/tasks/update', 'TaskController@update')->middleware('auth');

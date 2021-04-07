@@ -18,11 +18,15 @@ class TaskController extends Controller
             ['tutorial_id', '=', $request->tutorial_id],
             ['status', '=', $request->status]
         ])->max('order');
+        \Debugbar::info($max_order);
 
         $task->name = $request->name;
         $task->tutorial_id = $request->tutorial_id;
-        $task->order = $max_order + 1;
         $task->status = $request->status;
+
+        if (is_null($max_order)) $task->order = 0;
+        else $task->order = $max_order + 1;
+
         $task->save();
 
         $tutorials = Auth::user()->tutorials()->orderBy('created_at')->get();

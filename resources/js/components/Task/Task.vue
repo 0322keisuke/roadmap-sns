@@ -1,7 +1,7 @@
 <template>
     <div class="col col-md-3.8 border m-2 bg-color">
         <h3 class="text-center">{{ title }}</h3>
-        <p>やることタスクの数：{{ displayTasks.length }}</p>
+        <p>{{ displayTasks.length }}枚のタスク</p>
         <draggable
             group="tasks"
             :list="displayTasks"
