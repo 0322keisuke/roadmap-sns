@@ -11,6 +11,7 @@
         <div class="card-body pt-0">
           <div class="card-text">
             @include('roadmaps.form')
+            <roadmap-copy-all></roadmap-copy-all>
           </div>
         </div>
       </div>

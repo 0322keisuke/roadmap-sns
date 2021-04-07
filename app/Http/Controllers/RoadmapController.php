@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Roadmap;
 use App\RoadmapTutorial;
 use App\RoadmapTutorialTask;
+use App\Tutorial;
+use App\Task;
 use App\Http\Requests\RoadmapRequest;
+use App\Http\Requests\TutorialAndTaskRequest;
 use Illuminate\Http\Request;
 
 class RoadmapController extends Controller
@@ -15,6 +18,55 @@ class RoadmapController extends Controller
         $roadmaps = Roadmap::all()->sortByDesc('created_at');
 
         return view('roadmaps.index', ['roadmaps' => $roadmaps]);
+    }
+
+    public function show(Roadmap $roadmap)
+    {
+        $tutorials = $roadmap->tutorials()->orderBy('created_at')->get();
+
+        $tutorials_title = $roadmap->tutorials()->orderBy('created_at')->get('title')->toArray();
+
+        $lists = [];
+
+        foreach ($tutorials as $key => $tutorial) {
+            array_push($lists, ['title' => $tutorials_title[$key]['title'], 'tasks' => []]);
+
+            $temp_tasks = RoadmapTutorialTask::where('tutorial_id', $tutorial->id)->orderBy('created_at')->get('name')->toArray();
+
+            for ($i = 0; $i < count($temp_tasks); $i++) {
+                array_push($lists[$key]['tasks'],  $temp_tasks[$i]['name']);
+            }
+        }
+
+        return view('roadmaps.show', ['roadmap' => $roadmap, 'lists' => $lists]);
+    }
+
+    public function allcopy(TutorialAndTaskRequest $request, Tutorial $tutorial, Task $task)
+    {
+        \Debugbar::info($request);
+        \Debugbar::info($request[0]);
+
+        foreach ($request as $request_tutorial) {
+            \Debugbar::info($request_tutorial);
+            $tutorial->title = $request_tutorial->title;
+            $tutorial->user_id = $request->user()->id;
+            $tutorial->order = 1;
+            $tutorial->status = 1;
+            $tutorial->save();
+
+            foreach ($request_tutorial->tasks as $key => $request_task) {
+                $latest_tutorial_id = DB::table('tutorials')->where([
+                    ['user_id', '=', $request->user()->id], ['title', '=', $request_tutorial->title]
+                ])->max('id');
+
+                $task->name = $request_task;
+                $task->tutorial_id = $latest_tutorial_id;
+                $task->status = 1;
+                $task->order = $key;
+
+                $task->save();
+            }
+        }
     }
 
     public function create()
@@ -73,26 +125,5 @@ class RoadmapController extends Controller
             'id' => $roadmap->id,
             'countLikes' => $roadmap->count_likes,
         ];
-    }
-
-    public function show(Roadmap $roadmap)
-    {
-        $tutorials = $roadmap->tutorials()->orderBy('created_at')->get();
-
-        $tutorials_title = $roadmap->tutorials()->orderBy('created_at')->get('title')->toArray();
-
-        $lists = [];
-
-        foreach ($tutorials as $key => $tutorial) {
-            array_push($lists, ['title' => $tutorials_title[$key]['title'], 'tasks' => []]);
-
-            $temp_tasks = RoadmapTutorialTask::where('tutorial_id', $tutorial->id)->orderBy('created_at')->get('name')->toArray();
-
-            for ($i = 0; $i < count($temp_tasks); $i++) {
-                array_push($lists[$key]['tasks'],  $temp_tasks[$i]['name']);
-            }
-        }
-
-        return view('roadmaps.show', ['roadmap' => $roadmap, 'lists' => $lists]);
     }
 }
