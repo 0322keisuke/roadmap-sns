@@ -63,3 +63,9 @@
 .form-control:disabled {
     background-color: white;
 }
+
+.copybutton {
+    position: absolute;
+    top: 6px;
+    right: 14px;
+}

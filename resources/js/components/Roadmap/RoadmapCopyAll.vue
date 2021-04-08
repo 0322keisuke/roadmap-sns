@@ -24,10 +24,12 @@ export default {
         })
     },
     methods: {
-        async CopyAllTutorialTask() {
-            await axios.post("/roadmaps/allcopy", this.lists);
+        CopyAllTutorialTask() {
+            if (confirm("学習中の教材へコピーしますか？")) {
+                axios.post("/roadmaps/copy", this.lists);
 
-            this.isCopyedBy = true;
+                this.isCopyedBy = true;
+            }
         }
     }
 };

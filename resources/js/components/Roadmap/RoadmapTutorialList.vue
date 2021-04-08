@@ -7,6 +7,9 @@
             <div v-if="editable" class="deletelist" @click="removeTutorial">
                 ×
             </div>
+            <div v-if="!editable" class="copybutton" @click="CopyTutorialTask">
+                <i class="fas fa-plus"></i>
+            </div>
         </div>
 
         <roadmap-task
@@ -58,6 +61,16 @@ export default {
                 this.$store.dispatch("roadmap/removeTutorial", {
                     listIndex: this.listIndex
                 });
+            }
+        },
+        CopyTutorialTask() {
+            if (confirm("学習中の教材へコピーしますか？")) {
+                axios.post("/roadmaps/copy", [
+                    {
+                        title: this.title,
+                        tasks: this.tasks
+                    }
+                ]);
             }
         }
     }
