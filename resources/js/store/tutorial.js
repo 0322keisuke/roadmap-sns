@@ -36,6 +36,10 @@ const actions = {
     async addlist(context, payload) {
         const response = await axios.post("/tutorials/store", payload);
         context.commit("addlist", response.data);
+
+        context.commit("task/addTaskForNewTutorial", response.data, {
+            root: true
+        });
     },
     async removeTutorial(context, payload) {
         const response = await axios.delete(

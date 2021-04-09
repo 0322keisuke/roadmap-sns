@@ -44,8 +44,6 @@ class RoadmapController extends Controller
 
     public function copy(TutorialAndTaskRequest $request)
     {
-        \Debugbar::info($request->all());
-
         foreach ($request->all() as $request_tutorial) {
             $tutorial = new Tutorial();
             $tutorial->title = $request_tutorial['title'];

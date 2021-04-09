@@ -14,6 +14,11 @@ const mutations = {
     },
     updateTask(state, payload) {
         state.tasks = payload.tasks;
+    },
+    addTaskForNewTutorial(state, payload) {
+        state.tasks.push(payload.tasks[0]);
+        state.tasks.push(payload.tasks[1]);
+        state.tasks.push(payload.tasks[2]);
     }
 };
 
