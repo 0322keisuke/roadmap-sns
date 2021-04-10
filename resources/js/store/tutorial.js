@@ -13,6 +13,8 @@ const mutations = {
     },
     addlist(state, payload) {
         state.lists = payload.tutorials;
+        if (state.lists.length == 1)
+            state.display_tutorial_id = state.lists[0].id;
     },
     removeTutorial(state, payload) {
         state.lists = payload.tutorials;
