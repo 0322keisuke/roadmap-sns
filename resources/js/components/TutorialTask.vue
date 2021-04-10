@@ -4,7 +4,7 @@
 
         <div
             class="d-flex flex-wrap align-items-center mt-2"
-            v-if="initialTutorialId"
+            v-if="DisplayTasks.length"
         >
             <div class="d-flex align-items-center">
                 <div>教材の学習状況:</div>

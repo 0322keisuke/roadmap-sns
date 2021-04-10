@@ -10,12 +10,13 @@ use App\Task;
 use App\Http\Requests\RoadmapRequest;
 use App\Http\Requests\TutorialAndTaskRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class RoadmapController extends Controller
 {
     public function index()
     {
-        $roadmaps = Roadmap::all()->sortByDesc('created_at');
+        $roadmaps = Roadmap::all()->sortByDesc('created_at')->load(['user', 'likes']);
 
         return view('roadmaps.index', ['roadmaps' => $roadmaps]);
     }
@@ -41,22 +42,21 @@ class RoadmapController extends Controller
         return view('roadmaps.show', ['roadmap' => $roadmap, 'lists' => $lists]);
     }
 
-    public function allcopy(TutorialAndTaskRequest $request, Tutorial $tutorial, Task $task)
+    public function copy(TutorialAndTaskRequest $request)
     {
-        \Debugbar::info($request);
-        \Debugbar::info($request[0]);
-
-        foreach ($request as $request_tutorial) {
-            \Debugbar::info($request_tutorial);
-            $tutorial->title = $request_tutorial->title;
+        foreach ($request->all() as $request_tutorial) {
+            $tutorial = new Tutorial();
+            $tutorial->title = $request_tutorial['title'];
             $tutorial->user_id = $request->user()->id;
             $tutorial->order = 1;
             $tutorial->status = 1;
             $tutorial->save();
 
-            foreach ($request_tutorial->tasks as $key => $request_task) {
+            foreach ($request_tutorial['tasks'] as $key => $request_task) {
+                $task = new Task();
+
                 $latest_tutorial_id = DB::table('tutorials')->where([
-                    ['user_id', '=', $request->user()->id], ['title', '=', $request_tutorial->title]
+                    ['user_id', '=', $request->user()->id], ['title', '=', $request_tutorial['title']]
                 ])->max('id');
 
                 $task->name = $request_task;

@@ -8,6 +8,7 @@ use App\Http\Requests\TutorialRequest;
 use App\Http\Requests\TutorialStatusRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class TutorialController extends Controller
 {
@@ -64,8 +65,15 @@ class TutorialController extends Controller
         //新しいtutorialsを返す
         $tutorials = Auth::user()->tutorials()->orderBy('created_at')->get();
 
+        $latest_tutorial_id = DB::table('tutorials')->where([
+            ['user_id', '=', $request->user()->id], ['title', '=', $request->title]
+        ])->max('id');
+
+        $tasks = [['tutorial_id' => $latest_tutorial_id, 'title' => 'Todo', 'status' => 1, 'tasks' => []], ['tutorial_id' => $latest_tutorial_id, 'title' => 'Doing', 'status' => 2, 'tasks' => []], ['tutorial_id' => $latest_tutorial_id, 'title' => 'Done', 'status' => 3, 'tasks' => []]];
+
         return [
             'tutorials' => $tutorials,
+            'tasks' => $tasks
         ];
     }
 

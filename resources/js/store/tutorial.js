@@ -13,6 +13,8 @@ const mutations = {
     },
     addlist(state, payload) {
         state.lists = payload.tutorials;
+        if (state.lists.length == 1)
+            state.display_tutorial_id = state.lists[0].id;
     },
     removeTutorial(state, payload) {
         state.lists = payload.tutorials;
@@ -36,6 +38,10 @@ const actions = {
     async addlist(context, payload) {
         const response = await axios.post("/tutorials/store", payload);
         context.commit("addlist", response.data);
+
+        context.commit("task/addTaskForNewTutorial", response.data, {
+            root: true
+        });
     },
     async removeTutorial(context, payload) {
         const response = await axios.delete(
