@@ -9,7 +9,7 @@
             <div
                 v-if="this.id != display_tutorial_id"
                 class="deletelist"
-                @click="removeTutorial"
+                @click.stop="removeTutorial"
             >
                 ×
             </div>
