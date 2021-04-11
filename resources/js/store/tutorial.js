@@ -17,7 +17,26 @@ const mutations = {
             state.display_tutorial_id = state.lists[0].id;
     },
     removeTutorial(state, payload) {
-        state.lists = payload.tutorials;
+        state.lists = payload.response.tutorials;
+        console.log(payload.response.tutorials);
+        if (payload.response.tutorials[0] === undefined) {
+            state.display_tutorial_id = 0;
+            state.display_tutorial_listIndex = 0;
+            return;
+        }
+        if (state.display_tutorial_id == payload.payload.id) {
+            if (state.display_tutorial_listIndex == 0) {
+                state.display_tutorial_id = state.lists[0].id;
+            } else {
+                state.display_tutorial_id =
+                    state.lists[payload.payload.listIndex - 1].id;
+
+                state.display_tutorial_listIndex -= 1;
+            }
+        } else {
+            if (state.display_tutorial_listIndex > payload.payload.listIndex)
+                state.display_tutorial_listIndex -= 1;
+        }
     },
     changeDisplayTutorialId(state, payload) {
         state.display_tutorial_id = payload.id;
@@ -49,7 +68,10 @@ const actions = {
             payload
         );
 
-        context.commit("removeTutorial", response.data);
+        context.commit("removeTutorial", {
+            response: response.data,
+            payload: payload
+        });
     },
     changeDisplayTutorialId(context, payload) {
         context.commit("changeDisplayTutorialId", payload);
