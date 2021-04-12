@@ -33,4 +33,20 @@ class RoadmapControllerTest extends TestCase
 
         $response->assertStatus(200)->assertViewIs('roadmaps.create');
     }
+
+    public function testAuthStore()
+    {
+        $user = factory(User::class)->create();
+
+        $response = $this->actingAs($user)->post(route('roadmaps.store'), [
+            'title' => 'タイトル',
+            'tutorial_task_names' => '[{"title":"5","tasks":["7","7"]},{"title":"6","tasks":["8","8"]}]',
+            'body' => '本文',
+            'estimated_time' => '5',
+            'level' => '3'
+        ]);
+
+
+        $response->assertRedirect(route('roadmaps.index'));
+    }
 }
