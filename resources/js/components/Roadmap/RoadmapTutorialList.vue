@@ -7,7 +7,11 @@
             <div v-if="editable" class="deletelist" @click="removeTutorial">
                 ×
             </div>
-            <div v-if="!editable" class="copybutton" @click="CopyTutorialTask">
+            <div
+                v-if="!editable && authorized"
+                class="copybutton"
+                @click="CopyTutorialTask"
+            >
                 <i class="fas fa-plus"></i>
             </div>
         </div>
@@ -48,6 +52,10 @@ export default {
         listIndex: {
             type: Number,
             required: true
+        },
+        authorized: {
+            type: Boolean,
+            default: false
         }
     },
     computed: {

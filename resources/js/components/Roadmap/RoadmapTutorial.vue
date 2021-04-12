@@ -12,6 +12,7 @@
             :title="list.title"
             :tasks="list.tasks"
             :listIndex="index"
+            :authorized="authorized"
         />
         <div v-if="getEditable" class="p-2 mr-1">
             <roadmap-tutorial-add />
@@ -37,6 +38,10 @@ export default {
             type: Array
         },
         editable: {
+            type: Boolean,
+            default: false
+        },
+        authorized: {
             type: Boolean,
             default: false
         }
