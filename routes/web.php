@@ -24,9 +24,9 @@ Route::get('/roadmaps/{roadmap}', 'RoadmapController@show')->name('roadmaps.show
 Route::post('/roadmaps/copy', 'RoadmapController@copy');
 
 Route::get('/tutorials', 'TutorialController@index')->name('tutorials.index')->middleware('auth');
-Route::post('/tutorials/store', 'TutorialController@store')->middleware('auth');
-Route::delete('/tutorials/{tutorial}/destroy', 'TutorialController@destroy')->middleware('auth');
-Route::match(['put', 'patch'], '/tutorials/{tutorial}/status', 'TutorialController@status')->middleware('auth');
+Route::post('/tutorials/store', 'TutorialController@store')->middleware('auth')->name('tutorials.store');
+Route::delete('/tutorials/{tutorial}/destroy', 'TutorialController@destroy')->middleware('auth')->name('tutorials.destroy');
+Route::match(['put', 'patch'], '/tutorials/{tutorial}/status', 'TutorialController@status')->middleware('auth')->name('tutorials.status');
 
 Route::post('/tasks/store', 'TaskController@store')->middleware('auth');
 Route::match(['put', 'patch'], '/tasks/update', 'TaskController@update')->middleware('auth');

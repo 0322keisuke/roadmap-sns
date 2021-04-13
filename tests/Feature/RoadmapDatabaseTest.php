@@ -17,7 +17,7 @@ class RoadmapDatabaseTest extends TestCase
             'title' => 'タイトル',
             'body' => '本文',
             'estimated_time' => 5,
-            'level' => '1'
+            'level' => 1
         ]);
         factory(Roadmap::class, 10)->create();
 
