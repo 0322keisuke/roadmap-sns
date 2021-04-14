@@ -16,7 +16,7 @@ class RoadmapControllerTest extends TestCase
     {
         $response = $this->get(route('roadmaps.index'));
 
-        $response->assertStatus(200)->assertViewIs('roadmaps.index');
+        $response->assertStatus(400)->assertViewIs('roadmaps.index');
     }
 
     public function testGuestCreate()
