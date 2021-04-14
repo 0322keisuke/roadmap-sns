@@ -13,7 +13,7 @@ jobs:
       DB_CONNECTION: pgsql
       DB_HOST: localhost
       DB_PORT: 5432
-      DB_DATABASE: larasns
+      DB_DATABASE: lararoadmap
       DB_USERNAME: default
       DB_PASSWORD: secret
     steps:
