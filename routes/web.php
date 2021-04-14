@@ -21,7 +21,7 @@ Route::get('/roadmaps/create', 'RoadmapController@create')->name('roadmaps.creat
 Route::post('/roadmaps/store', 'RoadmapController@store')->name('roadmaps.store')->middleware('auth');
 
 Route::get('/roadmaps/{roadmap}', 'RoadmapController@show')->name('roadmaps.show');
-Route::post('/roadmaps/copy', 'RoadmapController@copy');
+Route::post('/roadmaps/copy', 'RoadmapController@copy')->name('roadmaps.copy')->middleware('auth');
 
 Route::get('/tutorials', 'TutorialController@index')->name('tutorials.index')->middleware('auth');
 Route::post('/tutorials/store', 'TutorialController@store')->middleware('auth')->name('tutorials.store');

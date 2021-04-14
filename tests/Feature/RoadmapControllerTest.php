@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\User;
+use App\Roadmap;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -48,5 +49,35 @@ class RoadmapControllerTest extends TestCase
 
 
         $response->assertRedirect(route('roadmaps.index'));
+    }
+
+    public function testShow()
+    {
+        $roadmap = factory(Roadmap::class)->create();
+
+        $response = $this->get(route('roadmaps.show', ['roadmap' => $roadmap->id]));
+
+        $response->assertStatus(200)->assertViewIs('roadmaps.show');
+    }
+
+    public function testCopy()
+    {
+        $user = factory(User::class)->create();
+
+        $response = $this->actingAs($user)->post(route('roadmaps.copy'), [
+            ['tasks' => [
+                'HTMLに触れてみよう',
+                'CSSに触れてみよう',
+                'ボックスモデルを学ぼう'
+            ], 'title' => 'レイアウトを作れうようになろう'], [
+                'tasks' => [
+                    'Visual Studio Codeをインストールしよう',
+                    'コードを自動保存できるよう設定にしよう',
+                    'ファイルパスを補完できるようにしよう',
+                ], 'title' => '快適にコーディングするために開発環境を整えよう'
+            ]
+        ]);
+
+        $response->assertStatus(200);
     }
 }
