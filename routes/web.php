@@ -28,9 +28,9 @@ Route::post('/tutorials/store', 'TutorialController@store')->middleware('auth')-
 Route::delete('/tutorials/{tutorial}/destroy', 'TutorialController@destroy')->middleware('auth')->name('tutorials.destroy');
 Route::match(['put', 'patch'], '/tutorials/{tutorial}/status', 'TutorialController@status')->middleware('auth')->name('tutorials.status');
 
-Route::post('/tasks/store', 'TaskController@store')->middleware('auth');
-Route::match(['put', 'patch'], '/tasks/update', 'TaskController@update')->middleware('auth');
-Route::delete('/tasks/{task}/destroy', 'TaskController@destroy')->middleware('auth');
+Route::post('/tasks/store', 'TaskController@store')->name('tasks.store')->middleware('auth');
+Route::match(['put', 'patch'], '/tasks/update', 'TaskController@update')->name('tasks.update')->middleware('auth');
+Route::delete('/tasks/{task}/destroy', 'TaskController@destroy')->name('tasks.destroy')->middleware('auth');
 
 
 Route::prefix('roadmaps')->name('roadmaps.')->group(function () { {

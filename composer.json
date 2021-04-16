@@ -64,6 +64,10 @@
         ],
         "sniffer-rewrite": [
             "./vendor/bin/phpcbf --standard=phpcs.xml ./"
-        ]
+        ],
+        "post-install-cmd": [
+            "php artisan clear-compiled",
+            "chmod -R 777 public/"
+        ]       
     }
 }
