@@ -25,4 +25,14 @@ class UserControllerTest extends TestCase
 
         $response->assertStatus(200);
     }
+
+    public function testUserlikes()
+    {
+        $user = factory(User::class)->create();
+        $roadmap = factory(Roadmap::class)->create(['user_id' => $user->id]);
+
+        $response = $this->actingAs($user)->get(route('users.likes', ['name' => $user->name]));
+
+        $response->assertStatus(200);
+    }
 }
