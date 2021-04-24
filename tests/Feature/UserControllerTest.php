@@ -53,4 +53,14 @@ class UserControllerTest extends TestCase
 
         $response->assertStatus(200);
     }
+
+    public function testUserFollow()
+    {
+        $user1 = factory(User::class)->create();
+        $user2 = factory(User::class)->create();
+
+        $response = $this->actingAs($user1)->put(route('users.follow', ['name' => $user2->name]));
+
+        $response->assertStatus(200);
+    }
 }
