@@ -63,4 +63,16 @@ class UserControllerTest extends TestCase
 
         $response->assertStatus(200);
     }
+
+    public function testUserUnFollow()
+    {
+        $user1 = factory(User::class)->create();
+        $user2 = factory(User::class)->create();
+
+        $this->actingAs($user1)->put(route('users.follow', ['name' => $user2->name]));
+
+        $response = $this->actingAs($user1)->delete(route('users.unfollow', ['name' => $user2->name]));
+
+        $response->assertStatus(200);
+    }
 }
