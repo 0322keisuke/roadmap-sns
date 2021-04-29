@@ -55,4 +55,5 @@ http://roadmap-sns.herokuapp.com/
 ・CircleCI(自動テスト、テスト失敗時にmasterブランチへマージ不可)  
 
 
-
+## E-R図  
+![ER図](https://user-images.githubusercontent.com/62815672/116541125-0a348e80-a926-11eb-90d3-402869189ed1.png)
