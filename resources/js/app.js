@@ -6,6 +6,7 @@ import RoadmapCopyAll from "./components/Roadmap/RoadmapCopyAll";
 import RoadmapLike from "./components/RoadmapLike";
 import TutorialTask from "./components/TutorialTask";
 import FollowButton from "./components/FollowButton";
+import RoadmapTagsInput from "./components/RoadmapTagsInput";
 
 const app = new Vue({
     el: "#app",
@@ -15,6 +16,7 @@ const app = new Vue({
         RoadmapCopyAll,
         RoadmapLike,
         TutorialTask,
-        FollowButton
+        FollowButton,
+        RoadmapTagsInput
     }
 });

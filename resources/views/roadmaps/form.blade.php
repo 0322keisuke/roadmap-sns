@@ -17,6 +17,11 @@
   <textarea name="body" class="form-control" rows="8" placeholder="説明" {{ str_contains(url()->current(), 'create') ? '' : 'disabled' }}>{{ $roadmap->body ?? old('body') }}</textarea>
 </div>
 
+<div class="form-group">
+  <roadmap-tags-input>
+  </roadmap-tags-input>
+</div>
+
 <div class="md-form">
   <label for="estimated_time">学習時間目安(単位：時間)</label>
   <input type="number" name="estimated_time" id="estimated_time" class="form-control" value="{{ $roadmap->estimated_time ?? old('estimated_time') }}" min="1" max="300" {{ str_contains(url()->current(), 'create') ? '' : 'disabled' }}>
