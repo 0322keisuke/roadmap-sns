@@ -53,4 +53,9 @@ class Roadmap extends Model
     {
         return $this->hasMany('App\RoadmapTutorial');
     }
+
+    public function tags(): BelongsToMany
+    {
+        return $this->belongsToMany('App\Tag')->withTimestamps();
+    }
 }
