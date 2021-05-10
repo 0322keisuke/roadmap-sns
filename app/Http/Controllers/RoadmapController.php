@@ -7,6 +7,7 @@ use App\RoadmapTutorial;
 use App\RoadmapTutorialTask;
 use App\Tutorial;
 use App\Task;
+use App\Tag;
 use App\Http\Requests\RoadmapRequest;
 use App\Http\Requests\TutorialAndTaskRequest;
 use Illuminate\Http\Request;
@@ -83,6 +84,10 @@ class RoadmapController extends Controller
         $roadmap->level = $request->level;
         $roadmap->save();
 
+        $request->tags->each(function ($tagName) use($roadmap){
+            $tag = Tag::firstOrCreate(['name' => $tagName]);
+            $roadmap->tags()->attach($tag);
+        });
 
         foreach (json_decode($request->tutorial_task_names) as $tutorial_title) {
             $roadmap_tutorial = new RoadmapTutorial();
