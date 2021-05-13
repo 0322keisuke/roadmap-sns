@@ -72,7 +72,13 @@ class RoadmapController extends Controller
 
     public function create()
     {
-        return view('roadmaps.create');
+        $allTagNames = Tag::all()->map(function ($tag) {
+            return ['text' => $tag->name];
+        });
+
+        return view('roadmaps.create',[
+            'allTagNames' => $allTagNames,
+        ]);
     }
 
     public function store(RoadmapRequest $request, Roadmap $roadmap, RoadmapTutorial $roadmap_tutorial)

@@ -19,7 +19,7 @@
 
 @if(str_contains(url()->current(),'create'))
 <div class="form-group">
-  <roadmap-tags-input>
+  <roadmap-tags-input :autocomplete-items='@json($allTagNames ?? [])'>
   </roadmap-tags-input>
 </div>
 @else
