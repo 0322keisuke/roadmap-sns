@@ -17,7 +17,7 @@ class RoadmapController extends Controller
 {
     public function index()
     {
-        $roadmaps = Roadmap::all()->sortByDesc('created_at')->load(['user', 'likes']);
+        $roadmaps = Roadmap::all()->sortByDesc('created_at')->load(['user', 'likes','tags']);
 
         return view('roadmaps.index', ['roadmaps' => $roadmaps]);
     }

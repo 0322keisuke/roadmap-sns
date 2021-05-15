@@ -9,7 +9,7 @@ class UserController extends Controller
 {
     public function show(string $name)
     {
-        $user = User::where('name', $name)->first()->load(['roadmaps.user', 'roadmaps.likes']);
+        $user = User::where('name', $name)->first()->load(['roadmaps.user', 'roadmaps.likes','roadmaps.tags']);
 
         $roadmaps = $user->roadmaps->sortByDesc('created_at');
 
@@ -24,7 +24,7 @@ class UserController extends Controller
 
     public function likes(string $name)
     {
-        $user = User::where('name', $name)->first()->load(['likes.user', 'likes.likes']);
+        $user = User::where('name', $name)->first()->load(['likes.user', 'likes.likes','likes.tags']);
 
         $roadmaps = $user->likes->sortByDesc('created_at');
 
