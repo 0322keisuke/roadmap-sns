@@ -4,6 +4,7 @@
         <vue-tags-input
             v-model="tag"
             :tags="tags"
+            placeholder="タグを5個まで入力できます"
             :autocomplete-items="filteredItems"
             @tags-changed="newTags => (tags = newTags)"
         />
@@ -17,27 +18,16 @@ export default {
     components: {
         VueTagsInput
     },
+    props: {
+        autocompleteItems: {
+            type: Array,
+            default: []
+        }
+    },
     data() {
         return {
             tag: "",
-            tags: [],
-            autocompleteItems: [
-                {
-                    text: "Spain"
-                },
-                {
-                    text: "France"
-                },
-                {
-                    text: "USA"
-                },
-                {
-                    text: "Germany"
-                },
-                {
-                    text: "China"
-                }
-            ]
+            tags: []
         };
     },
     computed: {
@@ -67,5 +57,8 @@ export default {
     margin-right: 4px;
     border-radius: 0px;
     font-size: 13px;
+}
+.vue-tags-input .ti-tag::before {
+    content: "#";
 }
 </style>

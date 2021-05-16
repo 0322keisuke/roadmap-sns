@@ -18,5 +18,7 @@ class DatabaseSeeder extends Seeder
         $this->call(RoadmapTutorialTasksTableSeeder::class);
         $this->call(TutorialsTableSeeder::class);
         $this->call(TasksTableSeeder::class);
+        $this->call(TagsTableSeeder::class);
+        $this->call(RoadmapTagTableSeeder::class);
     }
 }

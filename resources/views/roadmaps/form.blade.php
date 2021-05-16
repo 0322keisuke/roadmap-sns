@@ -17,10 +17,27 @@
   <textarea name="body" class="form-control" rows="8" placeholder="説明" {{ str_contains(url()->current(), 'create') ? '' : 'disabled' }}>{{ $roadmap->body ?? old('body') }}</textarea>
 </div>
 
+@if(str_contains(url()->current(),'create'))
 <div class="form-group">
-  <roadmap-tags-input>
+  <roadmap-tags-input :autocomplete-items='@json($allTagNames ?? [])'>
   </roadmap-tags-input>
 </div>
+@else
+@foreach($roadmap->tags as $tag)
+@if($loop->first)
+<label>タグ</label>
+<div class="pt-0 pb-4 pl-3">
+  <div class="line-height">
+    @endif
+    <a href="{{ route('tags.show', ['name' => $tag->name]) }}" class="border p-1 mr-1 mt-1 text-muted">
+      {{ $tag->hashtag }}
+    </a>
+    @if($loop->last)
+  </div>
+</div>
+@endif
+@endforeach
+@endif
 
 <div class="md-form">
   <label for="estimated_time">学習時間目安(単位：時間)</label>
