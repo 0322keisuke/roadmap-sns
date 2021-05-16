@@ -52,6 +52,8 @@
                             class="dropdown-item"
                             type="button"
                             @click="updateTutorialStatus(3)"
+                            data-toggle="modal"
+                            data-target="#modal1"
                         >
                             完了
                         </button>
@@ -112,6 +114,46 @@
                 @remove="AddandRemoveTask"
             />
         </div>
+
+        <div
+            class="modal fade"
+            id="modal1"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="label1"
+            aria-hidden="true"
+        >
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="label1">
+                            学習お疲れ様でした！
+                        </h5>
+                        <button
+                            type="button"
+                            class="close"
+                            data-dismiss="modal"
+                            aria-label="Close"
+                        >
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>＜勇気がでる今日の名言＞</p>
+                        {{ finishComment[finishCommentNumber] }}
+                    </div>
+                    <div class="modal-footer">
+                        <button
+                            type="button"
+                            class="btn btn-secondary"
+                            data-dismiss="modal"
+                        >
+                            閉じる
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -143,7 +185,17 @@ export default {
             updateStatus: 0,
             addStatus: 0,
             removeStatus: 0,
-            status: { "1": "計画中", "2": "学習中", "3": "完了" }
+            status: { "1": "計画中", "2": "学習中", "3": "完了" },
+            finishComment: [
+                "Stay hungry. Stay foolish. -スティーブ・ジョブズ-",
+                "天才とは努力する凡才のことである。-アインシュタイン-",
+                "いいんだ。岡本太郎の責任でやるんだから。-岡本太郎-",
+                "特別なことをするために特別なことをするのではない、特別なことをするために普段どおりの当たり前のことをする -イチロー-",
+                "どんなに悔いても過去は変わらない。どれほど心配したところで未来もどうなるものでもない。いま、現在に最善を尽くすことである。-松下幸之-",
+                "そのことはできる、それをやる、と決断せよ。それからその方法を見つけるのだ。-エイブラハム・リンカーン-",
+                "目標を達成するには、全力で取り組む以外に方法はない。そこに近道はない。-マイケル・ジョーダン-"
+            ],
+            finishCommentNumber: 0
         };
     },
     created: function() {
@@ -241,6 +293,10 @@ export default {
             });
         },
         updateTutorialStatus: function(status) {
+            this.finishCommentNumber = Math.floor(
+                Math.random() * this.finishComment.length
+            );
+
             this.$store.dispatch("tutorial/updateTutorialStatus", {
                 status: status,
                 id: this.display_tutorial_id,
