@@ -139,7 +139,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <p>＜勇気がでる今日の名言＞</p>
+                        <p>＜勇気がでる名言＞</p>
                         {{ finishComment[finishCommentNumber] }}
                     </div>
                     <div class="modal-footer">
